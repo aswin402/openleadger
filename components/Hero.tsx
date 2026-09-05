@@ -101,7 +101,7 @@ export function Hero() {
   };
 
   return (
-    <section className="min-h-[85vh] sm:min-h-[88vh] flex flex-col justify-between items-center px-4 sm:px-6 pt-28 sm:pt-32 md:pt-36 pb-8 text-center relative max-w-[1440px] mx-auto w-full">
+    <section className="min-h-screen min-h-[100dvh] flex flex-col justify-between items-center px-4 sm:px-6 pt-28 sm:pt-32 md:pt-36 pb-10 sm:pb-14 text-center relative max-w-[1440px] mx-auto w-full mb-16 sm:mb-24">
       
       {/* Invisible spacing top anchor */}
       <div className="w-full h-2" />
