@@ -102,10 +102,10 @@ export function Hero() {
   };
 
   return (
-    <section className="min-h-screen min-h-[100dvh] flex flex-col justify-between items-center px-4 sm:px-6 pt-28 sm:pt-32 md:pt-36 pb-10 sm:pb-14 text-center relative max-w-[1440px] mx-auto w-full mb-16 sm:mb-24 overflow-hidden rounded-3xl sm:rounded-[40px] border border-black/10 shadow-[0_24px_70px_rgba(0,0,0,0.18)]">
+    <section className="relative isolate w-full min-h-screen min-h-[100dvh] flex flex-col justify-between items-center px-4 sm:px-6 lg:px-8 pt-28 sm:pt-32 md:pt-36 pb-10 sm:pb-14 text-center overflow-hidden border-b border-black/10">
       
-      {/* 1. AUI Animated WebGL Fluid Shader Background */}
-      <div className="absolute inset-0 -z-10 overflow-hidden bg-[#0A0A0A]">
+      {/* 1. AUI Animated WebGL Fluid Shader Background (Full-Bleed 100% Width & Height) */}
+      <div className="absolute inset-0 z-0 overflow-hidden bg-[#0A0A0A] pointer-events-none w-full h-full">
         {/* WebGL Canvas running fluid Perlin noise shader from aui.io */}
         <AuiShaderBackground imageSrc="/images/home-gradient.jpeg" active={true} />
 

@@ -85,7 +85,7 @@ void main() {
   uv = rotation * (uv - 0.5) + 0.5;
 
   // Distortion parameters
-  float strength = 0.2;
+  float strength = 0.22;
   float speed = u_time * 0.6;
   float scaleX = 3.0;
   float scaleY = 7.0;
@@ -121,6 +121,56 @@ void main() {
 }
 `;
 
+// Helper: Procedural high-resolution gradient canvas
+function createProceduralGradient(): HTMLCanvasElement {
+  const c = document.createElement('canvas');
+  c.width = 1024;
+  c.height = 640;
+  const ctx = c.getContext('2d');
+  if (ctx) {
+    // Deep black base
+    ctx.fillStyle = '#070200';
+    ctx.fillRect(0, 0, 1024, 640);
+
+    // Deep crimson/scarlet wash
+    const g1 = ctx.createRadialGradient(280, 300, 30, 280, 300, 480);
+    g1.addColorStop(0, '#ff4400');
+    g1.addColorStop(0.35, '#d61f00');
+    g1.addColorStop(0.7, '#6b0a00');
+    g1.addColorStop(1, 'transparent');
+    ctx.fillStyle = g1;
+    ctx.fillRect(0, 0, 1024, 640);
+
+    // Vivid brand orange #ff6600 & hot amber core
+    const g2 = ctx.createRadialGradient(650, 380, 30, 650, 380, 440);
+    g2.addColorStop(0, '#ff9900');
+    g2.addColorStop(0.28, '#ff6600');
+    g2.addColorStop(0.65, '#b32400');
+    g2.addColorStop(1, 'transparent');
+    ctx.fillStyle = g2;
+    ctx.fillRect(0, 0, 1024, 640);
+
+    // Diagonal gold/white highlight streak
+    const g3 = ctx.createLinearGradient(120, 500, 900, 120);
+    g3.addColorStop(0, 'transparent');
+    g3.addColorStop(0.35, 'rgba(255, 120, 20, 0.85)');
+    g3.addColorStop(0.52, 'rgba(255, 185, 60, 0.95)');
+    g3.addColorStop(0.7, 'rgba(210, 35, 0, 0.7)');
+    g3.addColorStop(1, 'transparent');
+    ctx.fillStyle = g3;
+    ctx.fillRect(0, 0, 1024, 640);
+
+    // Subtle dark slate blue accent
+    const g4 = ctx.createRadialGradient(900, 120, 20, 900, 120, 360);
+    g4.addColorStop(0, '#2d4b68');
+    g4.addColorStop(0.6, '#0d1926');
+    g4.addColorStop(1, 'transparent');
+    ctx.fillStyle = g4;
+    ctx.fillRect(0, 0, 1024, 640);
+  }
+  return c;
+}
+
 export function AuiShaderBackground({
   imageSrc = '/images/home-gradient.jpeg',
   active = true,
@@ -136,19 +186,6 @@ export function AuiShaderBackground({
   const isRunningRef = useRef<boolean>(false);
   const isUnmountedRef = useRef<boolean>(false);
   const [restartKey, setRestartKey] = useState<number>(0);
-
-  // Resize canvas to match display size
-  const updateSize = useCallback(() => {
-    const canvas = canvasRef.current;
-    if (!canvas || !canvas.parentElement) return;
-    const parent = canvas.parentElement;
-    const w = parent.clientWidth;
-    const h = parent.clientHeight;
-    if (canvas.width !== w || canvas.height !== h) {
-      canvas.width = w;
-      canvas.height = h;
-    }
-  }, []);
 
   // Compile shaders & create program
   const createProgram = useCallback((gl: WebGLRenderingContext) => {
@@ -207,16 +244,23 @@ export function AuiShaderBackground({
     texCoordBufferRef.current = texBuffer;
   };
 
-  // Upload texture to GPU
-  const uploadTexture = useCallback((gl: WebGLRenderingContext, img: HTMLImageElement) => {
-    const tex = gl.createTexture();
-    gl.bindTexture(gl.TEXTURE_2D, tex);
-    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, img);
-    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
-    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
-    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
-    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
-    textureRef.current = tex;
+  // Upload texture to GPU (supports Canvas or Image)
+  const uploadTexture = useCallback((gl: WebGLRenderingContext, source: TexImageSource) => {
+    try {
+      let tex = textureRef.current;
+      if (!tex) {
+        tex = gl.createTexture();
+        textureRef.current = tex;
+      }
+      gl.bindTexture(gl.TEXTURE_2D, tex);
+      gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, source);
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+    } catch (e) {
+      console.warn('Failed to upload texture:', e);
+    }
   }, []);
 
   // Teardown WebGL resources
@@ -260,11 +304,11 @@ export function AuiShaderBackground({
     let gl = glRef.current;
 
     if (!gl && active) {
-      gl = canvas.getContext('webgl', {
+      gl = (canvas.getContext('webgl', {
         antialias: false,
         alpha: false,
         powerPreference: 'high-performance',
-      });
+      }) || canvas.getContext('experimental-webgl')) as WebGLRenderingContext | null;
       glRef.current = gl;
     }
 
@@ -274,42 +318,55 @@ export function AuiShaderBackground({
       programRef.current = prog;
       setupBuffers(gl);
 
-      // Temporary placeholder 1x1 orange texture before image loads
-      const initialTex = gl.createTexture();
-      gl.bindTexture(gl.TEXTURE_2D, initialTex);
-      gl.texImage2D(
-        gl.TEXTURE_2D,
-        0,
-        gl.RGBA,
-        1,
-        1,
-        0,
-        gl.RGBA,
-        gl.UNSIGNED_BYTE,
-        new Uint8Array([255, 102, 0, 255])
-      );
-      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
-      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
-      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
-      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
-      textureRef.current = initialTex;
+      // 1. Instantly upload procedural fallback gradient so canvas is NEVER blank
+      const procCanvas = createProceduralGradient();
+      uploadTexture(gl, procCanvas);
+
+      // 2. Load the high-res texture image from aui.io
+      const img = new Image();
+      img.src = imageSrc;
 
       const activeGL = gl;
+      const handleImageReady = () => {
+        if (!isUnmountedRef.current && activeGL) {
+          uploadTexture(activeGL, img);
+        }
+      };
+
+      if (img.complete && img.naturalWidth > 0) {
+        handleImageReady();
+      } else if (img.decode) {
+        img.decode().then(handleImageReady).catch(() => {
+          img.onload = handleImageReady;
+        });
+      } else {
+        img.onload = handleImageReady;
+      }
+
+      // 3. Render loop with auto-resizing & DPR awareness
       const renderLoop = () => {
         if (!activeGL || !programRef.current || isUnmountedRef.current || !isRunningRef.current) {
           return;
         }
 
-        const program = programRef.current;
-        const posBuf = posBufferRef.current;
-        const texBuf = texCoordBufferRef.current;
-        const texture = textureRef.current;
+        const cvs = activeGL.canvas as HTMLCanvasElement;
+        const dpr = Math.min(typeof window !== 'undefined' ? window.devicePixelRatio || 1 : 1, 2);
+        const displayW = Math.round((cvs.clientWidth || cvs.parentElement?.clientWidth || window.innerWidth) * dpr);
+        const displayH = Math.round((cvs.clientHeight || cvs.parentElement?.clientHeight || window.innerHeight) * dpr);
 
-        const { width, height } = activeGL.canvas;
+        if (displayW > 0 && displayH > 0 && (cvs.width !== displayW || cvs.height !== displayH)) {
+          cvs.width = displayW;
+          cvs.height = displayH;
+        }
+
+        const width = cvs.width || 800;
+        const height = cvs.height || 600;
+
         activeGL.viewport(0, 0, width, height);
         activeGL.clear(activeGL.COLOR_BUFFER_BIT);
-        activeGL.useProgram(program);
+        activeGL.useProgram(programRef.current);
 
+        const program = programRef.current;
         const uRes = activeGL.getUniformLocation(program, 'u_resolution');
         const uTime = activeGL.getUniformLocation(program, 'u_time');
         const uImage = activeGL.getUniformLocation(program, 'u_image');
@@ -319,14 +376,14 @@ export function AuiShaderBackground({
         activeGL.uniform1f(uTime, 0.001 * performance.now());
         activeGL.uniform1f(uBend, 0.2);
 
-        if (texture) {
+        if (textureRef.current) {
           activeGL.activeTexture(activeGL.TEXTURE0);
-          activeGL.bindTexture(activeGL.TEXTURE_2D, texture);
+          activeGL.bindTexture(activeGL.TEXTURE_2D, textureRef.current);
           activeGL.uniform1i(uImage, 0);
         }
 
-        if (posBuf) {
-          activeGL.bindBuffer(activeGL.ARRAY_BUFFER, posBuf);
+        if (posBufferRef.current) {
+          activeGL.bindBuffer(activeGL.ARRAY_BUFFER, posBufferRef.current);
           const aPos = activeGL.getAttribLocation(program, 'a_position');
           if (aPos !== -1) {
             activeGL.enableVertexAttribArray(aPos);
@@ -334,8 +391,8 @@ export function AuiShaderBackground({
           }
         }
 
-        if (texBuf) {
-          activeGL.bindBuffer(activeGL.ARRAY_BUFFER, texBuf);
+        if (texCoordBufferRef.current) {
+          activeGL.bindBuffer(activeGL.ARRAY_BUFFER, texCoordBufferRef.current);
           const aTex = activeGL.getAttribLocation(program, 'a_texCoord');
           if (aTex !== -1) {
             activeGL.enableVertexAttribArray(aTex);
@@ -347,30 +404,25 @@ export function AuiShaderBackground({
         animFrameRef.current = requestAnimationFrame(renderLoop);
       };
 
-      // Load the gradient image texture
-      const img = new Image();
-      img.src = imageSrc;
-      img.crossOrigin = 'anonymous';
-
-      const handleImageReady = () => {
-        if (!isUnmountedRef.current && activeGL) {
-          uploadTexture(activeGL, img);
+      const handleWindowResize = () => {
+        if (!activeGL || isUnmountedRef.current) return;
+        const cvs = activeGL.canvas as HTMLCanvasElement;
+        const dpr = Math.min(typeof window !== 'undefined' ? window.devicePixelRatio || 1 : 1, 2);
+        const displayW = Math.round((cvs.clientWidth || cvs.parentElement?.clientWidth || window.innerWidth) * dpr);
+        const displayH = Math.round((cvs.clientHeight || cvs.parentElement?.clientHeight || window.innerHeight) * dpr);
+        if (displayW > 0 && displayH > 0) {
+          cvs.width = displayW;
+          cvs.height = displayH;
+          activeGL.viewport(0, 0, displayW, displayH);
         }
       };
+      window.addEventListener('resize', handleWindowResize, { passive: true });
 
-      if (img.decode) {
-        img
-          .decode()
-          .then(handleImageReady)
-          .catch(() => {
-            img.onload = handleImageReady;
-          });
-      } else {
-        img.onload = handleImageReady;
-      }
-
-      updateSize();
       animFrameRef.current = requestAnimationFrame(renderLoop);
+
+      return () => {
+        window.removeEventListener('resize', handleWindowResize);
+      };
     } else if (!active && isRunningRef.current && gl) {
       cleanupGL(gl);
     }
@@ -381,19 +433,12 @@ export function AuiShaderBackground({
         cleanupGL(glRef.current);
       }
     };
-  }, [imageSrc, active, restartKey, createProgram, uploadTexture, updateSize]);
-
-  // Window resize observer
-  useEffect(() => {
-    updateSize();
-    window.addEventListener('resize', updateSize);
-    return () => window.removeEventListener('resize', updateSize);
-  }, [updateSize]);
+  }, [imageSrc, active, restartKey, createProgram, uploadTexture]);
 
   return (
     <canvas
       ref={canvasRef}
-      className={`w-full h-full block object-cover ${className}`}
+      className={`absolute inset-0 w-full h-full block ${className}`}
     />
   );
 }

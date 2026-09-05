@@ -17,7 +17,7 @@ export function WhyOpenLedger() {
   });
 
   return (
-    <section id="why" className="px-4 sm:px-6 lg:px-8 max-w-[1440px] mx-auto mb-20 sm:mb-28 scroll-mt-24">
+    <section id="why" className="px-4 sm:px-6 lg:px-8 max-w-[1440px] mx-auto pt-16 sm:pt-24 mb-20 sm:mb-28 scroll-mt-16">
       
       {/* 1. Header Section matching Screenshot Image 0 */}
       <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 mb-10 sm:mb-14">
