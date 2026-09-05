@@ -122,7 +122,7 @@ export function WhyOpenLedger() {
               return (
                 <div
                   key={tab.id}
-                  className={`relative z-20 bg-white pt-2.5 sm:pt-3 px-2.5 sm:px-3 pb-3 mb-[-1px] flex items-center ${
+                  className={`relative z-20 bg-white pt-2.5 sm:pt-3 px-1 sm:px-2 pb-2.5 sm:pb-3 mb-[-1px] flex items-center ${
                     isFirst
                       ? 'rounded-tl-[24px] sm:rounded-tl-[32px]'
                       : 'rounded-t-[20px] sm:rounded-t-[24px]'
@@ -138,19 +138,18 @@ export function WhyOpenLedger() {
                     </svg>
                   )}
 
-                  {/* Active Button with Card Background (White) and Orange Text */}
+                  {/* Active Tab: Pure Orange Text Alone (No Background, No Border, No Shadow) */}
                   <button
                     type="button"
                     onClick={() => {
                       setActiveTab(idx);
                       setIsPaused(true);
                     }}
-                    className="flex items-center gap-2 bg-white text-[oklch(0.696_0.204_43.5)] font-bold text-xs sm:text-sm md:text-base px-5 sm:px-7 py-2.5 sm:py-3.5 rounded-full border border-black/[0.08] shadow-[0_4px_16px_rgba(0,0,0,0.06)] whitespace-nowrap cursor-pointer transition-all hover:scale-[1.01]"
+                    className="text-[oklch(0.696_0.204_43.5)] font-bold text-xs sm:text-sm md:text-base px-4 sm:px-6 py-2.5 sm:py-3 whitespace-nowrap cursor-pointer select-none bg-transparent border-0 shadow-none"
                     aria-selected={true}
                     role="tab"
                   >
-                    <span>{tab.label}</span>
-                    <span className="w-1.5 h-1.5 rounded-full bg-[oklch(0.696_0.204_43.5)] animate-pulse" />
+                    {tab.label}
                   </button>
 
                   {/* Right Concave Inverted Fillet Curve (when not last tab) */}
@@ -178,7 +177,7 @@ export function WhyOpenLedger() {
                   setActiveTab(idx);
                   setIsPaused(true);
                 }}
-                className="relative z-10 px-4 sm:px-6 py-3.5 sm:py-4 text-[#4B5563] hover:text-[#0A0A0A] font-semibold text-xs sm:text-sm md:text-base cursor-pointer transition-colors whitespace-nowrap mb-1"
+                className="relative z-10 px-4 sm:px-6 py-2.5 sm:py-3 text-[#4B5563] hover:text-[#0A0A0A] font-semibold text-xs sm:text-sm md:text-base cursor-pointer transition-colors whitespace-nowrap mb-1 select-none bg-transparent border-0"
                 aria-selected={false}
                 role="tab"
               >
