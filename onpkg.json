@@ -98,6 +98,7 @@
     ],
     "file_patterns": [
       "*.css",
+      "*.js",
       "*.json",
       "*.md",
       "*.prisma",
@@ -118,6 +119,7 @@
       "app/layout.tsx",
       "app/page.tsx",
       "components.json",
+      "components/AuiShaderBackground.tsx",
       "components/Capabilities.tsx",
       "components/CouncilMode.tsx",
       "components/FAQ.tsx",
@@ -144,6 +146,7 @@
       "docs/PRISMA.md",
       "docs/REDIS.md",
       "docs/STORAGE.md",
+      "extracted_shader_module.js",
       "hooks/useAuth.ts",
       "hooks/usePosts.ts",
       "instrumentation.ts",
