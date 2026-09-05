@@ -80,7 +80,7 @@ export function WhyOpenLedger() {
   return (
     <section id="why" className="px-4 sm:px-6 lg:px-8 max-w-[1440px] mx-auto pt-16 sm:pt-24 mb-20 sm:mb-28 scroll-mt-16">
       
-      {/* 1. Header Section */}
+      {/* 1. Header Section matching Mockup */}
       <div className="text-center max-w-3xl mx-auto mb-10 sm:mb-14">
         {/* Kicker Badge with orange square */}
         <div className="inline-flex items-center gap-2 mb-3.5 px-3.5 py-1 bg-white/80 backdrop-blur-sm rounded-full border border-gray-200/70 shadow-xs">
@@ -101,9 +101,9 @@ export function WhyOpenLedger() {
         </p>
       </div>
 
-      {/* 2. Folder-Tabbed Outer Enclosure Card matching Mockup Image 1 */}
+      {/* 2. Folder-Tabbed Outer Enclosure Card matching Mockup Image 2 */}
       <div 
-        className="bg-[#E3E5EA] border border-black/5 rounded-[32px] sm:rounded-[44px] p-3 sm:p-5 md:p-6 shadow-[0_4px_24px_rgba(0,0,0,0.03)]"
+        className="bg-[#E3E5EA] border border-black/5 rounded-[32px] sm:rounded-[44px] p-2.5 sm:p-4 md:p-5 shadow-[0_4px_24px_rgba(0,0,0,0.03)]"
         onMouseEnter={() => setIsPaused(true)}
         onMouseLeave={() => setIsPaused(false)}
       >
@@ -122,7 +122,7 @@ export function WhyOpenLedger() {
               return (
                 <div
                   key={tab.id}
-                  className={`relative z-20 bg-white pt-2 sm:pt-2.5 px-2 sm:px-3 pb-2.5 sm:pb-3 mb-[-1px] flex items-center ${
+                  className={`relative z-20 bg-white pt-2.5 sm:pt-3 px-2.5 sm:px-3 pb-3 mb-[-1px] flex items-center ${
                     isFirst
                       ? 'rounded-tl-[24px] sm:rounded-tl-[32px]'
                       : 'rounded-t-[20px] sm:rounded-t-[24px]'
@@ -138,18 +138,19 @@ export function WhyOpenLedger() {
                     </svg>
                   )}
 
-                  {/* Active Orange Pill Button with Deep Shadow & White Border */}
+                  {/* Active Button with Card Background (White) and Orange Text */}
                   <button
                     type="button"
                     onClick={() => {
                       setActiveTab(idx);
                       setIsPaused(true);
                     }}
-                    className="flex items-center gap-2 bg-[oklch(0.696_0.204_43.5)] text-white font-bold text-xs sm:text-sm md:text-base px-5 sm:px-7 py-2.5 sm:py-3.5 rounded-full border-2 border-white shadow-[0_16px_28px_-6px_rgba(0,0,0,0.32)] whitespace-nowrap cursor-pointer transition-transform hover:scale-[1.01]"
+                    className="flex items-center gap-2 bg-white text-[oklch(0.696_0.204_43.5)] font-bold text-xs sm:text-sm md:text-base px-5 sm:px-7 py-2.5 sm:py-3.5 rounded-full border border-black/[0.08] shadow-[0_4px_16px_rgba(0,0,0,0.06)] whitespace-nowrap cursor-pointer transition-all hover:scale-[1.01]"
                     aria-selected={true}
                     role="tab"
                   >
                     <span>{tab.label}</span>
+                    <span className="w-1.5 h-1.5 rounded-full bg-[oklch(0.696_0.204_43.5)] animate-pulse" />
                   </button>
 
                   {/* Right Concave Inverted Fillet Curve (when not last tab) */}
@@ -177,7 +178,7 @@ export function WhyOpenLedger() {
                   setActiveTab(idx);
                   setIsPaused(true);
                 }}
-                className="relative z-10 px-4 sm:px-6 py-3.5 sm:py-4 text-[#1F2937] hover:text-[#0A0A0A] font-semibold text-xs sm:text-sm md:text-base cursor-pointer transition-colors whitespace-nowrap mb-1"
+                className="relative z-10 px-4 sm:px-6 py-3.5 sm:py-4 text-[#4B5563] hover:text-[#0A0A0A] font-semibold text-xs sm:text-sm md:text-base cursor-pointer transition-colors whitespace-nowrap mb-1"
                 aria-selected={false}
                 role="tab"
               >
@@ -189,7 +190,7 @@ export function WhyOpenLedger() {
 
         {/* Seamless White Card Body matching Mockup 2 */}
         <div 
-          className={`relative bg-white rounded-b-[24px] sm:rounded-b-[36px] p-6 sm:p-10 md:p-12 shadow-[0_4px_20px_rgba(0,0,0,0.02)] border border-white min-h-[460px] flex flex-col lg:flex-row items-center justify-between gap-8 lg:gap-14 transition-all duration-300 overflow-hidden ${
+          className={`relative bg-white rounded-b-[24px] sm:rounded-b-[36px] p-6 sm:p-10 md:p-12 shadow-[0_4px_20px_rgba(0,0,0,0.02)] border border-white min-h-[520px] sm:min-h-[560px] md:min-h-[580px] flex flex-col lg:flex-row items-center justify-between gap-8 lg:gap-14 transition-all duration-300 overflow-hidden ${
             activeTab === 0
               ? 'rounded-tr-[24px] sm:rounded-tr-[36px]'
               : activeTab === TABS.length - 1
@@ -209,17 +210,17 @@ export function WhyOpenLedger() {
           >
             <div>
               {/* Tab Category Badge */}
-              <div className="inline-flex items-center gap-1.5 text-xs font-mono font-semibold uppercase tracking-wider text-[oklch(0.696_0.204_43.5)] mb-3">
+              <div className="inline-flex items-center gap-1.5 text-xs font-mono font-semibold uppercase tracking-wider text-[oklch(0.696_0.204_43.5)] mb-3.5">
                 <span>— FEATURE {activeTab + 1} OF {TABS.length}</span>
               </div>
 
               {/* Main Feature Title */}
-              <h3 className="font-['Satoshi'] text-3xl sm:text-4xl md:text-5xl font-bold text-[#0A0A0A] mb-2.5 tracking-tight">
+              <h3 className="font-['Satoshi'] text-3xl sm:text-4xl md:text-5xl font-bold text-[#0A0A0A] mb-3 tracking-tight">
                 {TABS[activeTab].label}
               </h3>
 
               {/* Tagline */}
-              <p className="text-sm sm:text-base font-semibold text-[oklch(0.696_0.204_43.5)] mb-4">
+              <p className="text-sm sm:text-base md:text-lg font-semibold text-[oklch(0.696_0.204_43.5)] mb-4">
                 {TABS[activeTab].tagline}
               </p>
 
@@ -248,7 +249,7 @@ export function WhyOpenLedger() {
           >
             {/* ================= TAB 0: Private & Unfiltered Widget ================= */}
             {activeTab === 0 && (
-              <div className="w-full max-w-md rounded-2xl bg-gradient-to-b from-[#F0F5F2] to-[#E4ECE7] border border-gray-200/70 p-6 flex flex-col justify-between min-h-[300px] sm:min-h-[330px] relative overflow-hidden shadow-inner">
+              <div className="w-full max-w-md rounded-2xl bg-gradient-to-b from-[#F0F5F2] to-[#E4ECE7] border border-gray-200/70 p-6 flex flex-col justify-between min-h-[320px] sm:min-h-[350px] relative overflow-hidden shadow-inner">
                 {/* Top Toggle Switch */}
                 <div className="flex items-center justify-between z-10">
                   <button
@@ -309,7 +310,7 @@ export function WhyOpenLedger() {
 
             {/* ================= TAB 1: Multi-Model Access Widget ================= */}
             {activeTab === 1 && (
-              <div className="w-full max-w-md rounded-2xl bg-gradient-to-b from-[#F8F6F2] to-[#EBE9E4] border border-gray-200/70 p-6 flex flex-col justify-between min-h-[300px] sm:min-h-[330px] relative overflow-hidden shadow-inner">
+              <div className="w-full max-w-md rounded-2xl bg-gradient-to-b from-[#F8F6F2] to-[#EBE9E4] border border-gray-200/70 p-6 flex flex-col justify-between min-h-[320px] sm:min-h-[350px] relative overflow-hidden shadow-inner">
                 <div className="my-auto self-center relative w-full h-48 flex items-center justify-center">
                   {/* Dashed Orbit Ring */}
                   <div className="absolute w-64 h-36 border border-dashed border-gray-400/60 rounded-[80px] pointer-events-none" />
@@ -392,7 +393,7 @@ export function WhyOpenLedger() {
 
             {/* ================= TAB 2: Unified Memory Widget ================= */}
             {activeTab === 2 && (
-              <div className="w-full max-w-md rounded-2xl bg-gradient-to-b from-[#F4F2F8] to-[#E8E4F0] border border-gray-200/70 p-6 flex flex-col justify-between min-h-[300px] sm:min-h-[330px] relative overflow-hidden shadow-inner">
+              <div className="w-full max-w-md rounded-2xl bg-gradient-to-b from-[#F4F2F8] to-[#E8E4F0] border border-gray-200/70 p-6 flex flex-col justify-between min-h-[320px] sm:min-h-[350px] relative overflow-hidden shadow-inner">
                 <div className="grid grid-cols-12 gap-3 my-auto items-center">
                   {/* Stacked Memory Chips */}
                   <div className="col-span-7 space-y-2">
@@ -443,7 +444,7 @@ export function WhyOpenLedger() {
 
             {/* ================= TAB 3: Built for Agents Widget ================= */}
             {activeTab === 3 && (
-              <div className="w-full max-w-md rounded-2xl bg-gradient-to-b from-[#EFF3F6] to-[#E2E8EC] border border-gray-200/70 p-6 flex flex-col justify-between min-h-[300px] sm:min-h-[330px] relative overflow-hidden shadow-inner">
+              <div className="w-full max-w-md rounded-2xl bg-gradient-to-b from-[#EFF3F6] to-[#E2E8EC] border border-gray-200/70 p-6 flex flex-col justify-between min-h-[320px] sm:min-h-[350px] relative overflow-hidden shadow-inner">
                 <div className="my-auto flex flex-col items-center justify-center py-2">
                   {/* API Request Pill */}
                   <div className="px-4 py-2 bg-white rounded-full border border-gray-200 shadow-sm text-xs font-mono flex items-center gap-2">
