@@ -6,12 +6,12 @@ import { ArrowRight, ShieldCheck } from 'lucide-react';
 
 export function Footer() {
   return (
-    <footer className="w-full pt-12 pb-16 px-4 sm:px-6 lg:px-8 max-w-[1240px] mx-auto">
+    <footer className="w-full pt-12 pb-16 px-4 sm:px-6 lg:px-8 max-w-[1440px] mx-auto">
       
       {/* Pre-Footer Call to Action Glass Panel */}
       <div className="lamosa-panel p-8 sm:p-12 lg:p-16 mb-16 sm:mb-20 text-center relative overflow-hidden">
         {/* Subtle Ambient Radial Highlight */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] bg-gradient-to-br from-[#FF4D36]/10 to-transparent rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] bg-gradient-to-br from-[oklch(0.696_0.204_43.5)]/15 to-transparent rounded-full blur-3xl pointer-events-none" />
 
         <div className="relative z-10 max-w-2xl mx-auto space-y-4">
           <div className="lamosa-section-badge mb-2">
@@ -54,7 +54,7 @@ export function Footer() {
         {/* Brand Column (Span 2 on Mobile) */}
         <div className="col-span-2 space-y-4">
           <Link href="#" className="flex items-center gap-2 text-lg font-bold text-[#0A0A0A]">
-            <span className="text-[#E1443A] font-black font-mono">{'//'}</span>
+            <span className="text-[oklch(0.696_0.204_43.5)] font-black font-mono">{'//'}</span>
             <span className="font-['Satoshi'] tracking-tight">OpenLedger</span>
           </Link>
           

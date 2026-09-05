@@ -70,7 +70,7 @@ export default function RootLayout({
           href="https://api.fontshare.com/v2/css?f[]=satoshi@900,700,600,500,400&display=swap"
         />
       </head>
-      <body className="min-h-full flex flex-col bg-[#F6F7F8] text-[#0A0A0A] font-sans selection:bg-[#E1443A]/10 selection:text-[#E1443A]">
+      <body className="min-h-full flex flex-col bg-[#F6F7F8] text-[#0A0A0A] font-sans selection:bg-[oklch(0.696_0.204_43.5/0.15)] selection:text-[oklch(0.696_0.204_43.5)]">
         {children}
       </body>
     </html>

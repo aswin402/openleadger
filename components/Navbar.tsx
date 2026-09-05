@@ -18,14 +18,14 @@ export function Navbar() {
 
   return (
     <header className={`fixed top-0 left-0 right-0 z-50 flex justify-center px-4 pt-3 sm:pt-4 pointer-events-none transition-all duration-300 ${isScrolled ? 'backdrop-blur-none' : ''}`}>
-      <div className="w-full max-w-[1240px] flex items-center justify-between pointer-events-auto">
+      <div className="w-full max-w-[1440px] flex items-center justify-between pointer-events-auto">
         
         {/* Brand Logo */}
         <Link 
           href="#" 
           className="flex items-center gap-2 px-4 py-2 bg-white/80 backdrop-blur-md border border-white rounded-full shadow-[0_2px_12px_rgba(0,0,0,0.04)] text-[#0A0A0A] font-bold text-lg tracking-tight hover:opacity-90 transition-opacity"
         >
-          <span className="text-[#E1443A] font-black font-mono">{'//'}</span>
+          <span className="text-[oklch(0.696_0.204_43.5)] font-black font-mono">{'//'}</span>
           <span className="font-['Satoshi'] tracking-tight">OpenLedger</span>
         </Link>
 
@@ -36,7 +36,7 @@ export function Navbar() {
           </Link>
           <Link href="#council" className="flex items-center gap-1.5 hover:text-[#0A0A0A] transition-colors group">
             Council Mode
-            <span className="px-2 py-0.5 text-[10px] font-semibold text-white bg-[#E1443A] rounded-full shadow-[0_2px_6px_rgba(225,68,58,0.3)]">
+            <span className="px-2 py-0.5 text-[10px] font-semibold text-white bg-[oklch(0.696_0.204_43.5)] rounded-full shadow-[0_2px_6px_oklch(0.696_0.204_43.5/0.3)]">
               New
             </span>
           </Link>
@@ -77,7 +77,7 @@ export function Navbar() {
         <div className="flex md:hidden items-center gap-2">
           <Link
             href="#pricing"
-            className="px-3 py-1.5 text-xs font-semibold text-white bg-[#E1443A] rounded-full shadow-[0_2px_8px_rgba(225,68,58,0.3)]"
+            className="px-3 py-1.5 text-xs font-semibold text-white bg-[oklch(0.696_0.204_43.5)] rounded-full shadow-[0_2px_8px_oklch(0.696_0.204_43.5/0.3)]"
           >
             Go Pro
           </Link>
@@ -107,7 +107,7 @@ export function Navbar() {
             className="flex items-center justify-between p-3 text-base font-semibold text-[#0A0A0A] hover:bg-black/5 rounded-2xl transition-colors"
           >
             <span>Council Mode™</span>
-            <span className="px-2 py-0.5 text-xs font-semibold text-white bg-[#E1443A] rounded-full">
+            <span className="px-2 py-0.5 text-xs font-semibold text-white bg-[oklch(0.696_0.204_43.5)] rounded-full">
               New
             </span>
           </Link>

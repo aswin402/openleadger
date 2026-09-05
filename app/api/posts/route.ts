@@ -26,7 +26,7 @@ async function getHandler(request: NextRequest) {
     });
 
     return NextResponse.json({ success: true, data: posts });
-  } catch (error: any) {
+  } catch (error: unknown) {
     logger.error('Error fetching posts in API:', error);
     return NextResponse.json(
       { success: false, error: 'Failed to fetch posts' },
@@ -84,7 +84,7 @@ async function postHandler(request: NextRequest) {
     });
 
     return NextResponse.json({ success: true, data: post }, { status: 201 });
-  } catch (error: any) {
+  } catch (error: unknown) {
     logger.error('Error creating post in API:', error);
     return NextResponse.json(
       { success: false, error: 'Internal Server Error' },

@@ -6,7 +6,7 @@ import Link from 'next/link';
 
 export function ImpactGrid() {
   return (
-    <section id="impact" className="px-4 sm:px-6 lg:px-8 max-w-[1240px] mx-auto mb-20 sm:mb-28 scroll-mt-24">
+    <section id="impact" className="px-4 sm:px-6 lg:px-8 max-w-[1440px] mx-auto mb-20 sm:mb-28 scroll-mt-24">
       
       {/* Outer Recessed Panel (Lamosa Tier 1) */}
       <div className="lamosa-panel p-4 sm:p-6 lg:p-8">
@@ -87,7 +87,7 @@ export function ImpactGrid() {
 
             <div className="mt-auto pt-6">
               <div className="font-['Satoshi'] text-2xl sm:text-3xl font-bold tracking-[-0.05em] text-[#0A0A0A] mb-1">
-                $80/mo <span className="text-[#E1443A] text-xl sm:text-2xl font-semibold">→ $20/mo</span>
+                $80/mo <span className="text-[oklch(0.696_0.204_43.5)] text-xl sm:text-2xl font-semibold">→ $20/mo</span>
               </div>
               <h3 className="font-['Satoshi'] text-lg sm:text-xl font-bold text-[#0A0A0A] mb-2 leading-snug">
                 Consolidated intelligence billing
@@ -120,7 +120,7 @@ export function ImpactGrid() {
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-2.5 my-2 mask-gradient-fade-bottom">
               
               <div className="flex items-center gap-2.5 px-3.5 py-2 bg-[#F6F7F8] rounded-full border border-white/80">
-                <Award className="w-4 h-4 text-[#E1443A] flex-shrink-0" />
+                <Award className="w-4 h-4 text-[oklch(0.696_0.204_43.5)] flex-shrink-0" />
                 <div className="text-xs">
                   <span className="font-bold text-[#0A0A0A]">o3 & DeepSeek R1</span>
                   <span className="text-[#737373] ml-1.5">Maths & Logic</span>
@@ -128,7 +128,7 @@ export function ImpactGrid() {
               </div>
 
               <div className="flex items-center gap-2.5 px-3.5 py-2 bg-[#F6F7F8] rounded-full border border-white/80">
-                <Award className="w-4 h-4 text-[#E1443A] flex-shrink-0" />
+                <Award className="w-4 h-4 text-[oklch(0.696_0.204_43.5)] flex-shrink-0" />
                 <div className="text-xs">
                   <span className="font-bold text-[#0A0A0A]">Claude Opus 4</span>
                   <span className="text-[#737373] ml-1.5">Editorial Drafting</span>
@@ -136,7 +136,7 @@ export function ImpactGrid() {
               </div>
 
               <div className="flex items-center gap-2.5 px-3.5 py-2 bg-[#F6F7F8] rounded-full border border-white/80">
-                <Award className="w-4 h-4 text-[#E1443A] flex-shrink-0" />
+                <Award className="w-4 h-4 text-[oklch(0.696_0.204_43.5)] flex-shrink-0" />
                 <div className="text-xs">
                   <span className="font-bold text-[#0A0A0A]">Gemini 2.5 Pro</span>
                   <span className="text-[#737373] ml-1.5">1M Token Codebase</span>
@@ -144,7 +144,7 @@ export function ImpactGrid() {
               </div>
 
               <div className="flex items-center gap-2.5 px-3.5 py-2 bg-[#F6F7F8] rounded-full border border-white/80">
-                <Award className="w-4 h-4 text-[#E1443A] flex-shrink-0" />
+                <Award className="w-4 h-4 text-[oklch(0.696_0.204_43.5)] flex-shrink-0" />
                 <div className="text-xs">
                   <span className="font-bold text-[#0A0A0A]">Grok 4 & FLUX.1</span>
                   <span className="text-[#737373] ml-1.5">Live Web & Image</span>

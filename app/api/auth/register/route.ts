@@ -69,7 +69,7 @@ async function registerHandler(request: NextRequest) {
     });
 
     return response;
-  } catch (error: any) {
+  } catch (error: unknown) {
     logger.error('Registration Error:', error);
     return NextResponse.json(
       { success: false, error: 'Internal Server Error' },

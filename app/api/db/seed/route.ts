@@ -1,10 +1,10 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import bcrypt from 'bcryptjs';
 import { logger } from '@/lib/logger';
 import { withLogging } from '@/lib/api-logger';
 
-async function seedHandler(request: NextRequest) {
+async function seedHandler() {
   if (process.env.NODE_ENV === 'production') {
     return NextResponse.json(
       { success: false, error: 'Seeding API disabled in production' },
@@ -83,10 +83,11 @@ async function seedHandler(request: NextRequest) {
 
     logger.info('Database seeded successfully via API!');
     return NextResponse.json({ success: true, message: 'Database seeded successfully' });
-  } catch (error: any) {
+  } catch (error: unknown) {
     logger.error('Error seeding database via API:', error);
+    const errorMessage = error instanceof Error ? error.message : 'Failed to seed database';
     return NextResponse.json(
-      { success: false, error: error.message || 'Failed to seed database' },
+      { success: false, error: errorMessage },
       { status: 500 }
     );
   }

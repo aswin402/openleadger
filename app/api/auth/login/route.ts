@@ -67,7 +67,7 @@ async function loginHandler(request: NextRequest) {
     });
 
     return response;
-  } catch (error: any) {
+  } catch (error: unknown) {
     logger.error('Login Error:', error);
     return NextResponse.json(
       { success: false, error: 'Internal Server Error' },

@@ -50,7 +50,7 @@ async function getHandler(request: NextRequest) {
     }
 
     return NextResponse.json({ success: true, data: user });
-  } catch (error: any) {
+  } catch (error: unknown) {
     logger.error('Auth check error:', error);
     return NextResponse.json(
       { success: false, error: 'Internal Server Error' },

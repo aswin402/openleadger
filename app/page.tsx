@@ -14,7 +14,7 @@ import { Footer } from '@/components/Footer';
 
 export default function Home() {
   return (
-    <div className="min-h-screen flex flex-col bg-[#F6F7F8] text-[#0A0A0A] font-sans selection:bg-[#E1443A]/10 selection:text-[#E1443A] overflow-x-hidden">
+    <div className="min-h-screen flex flex-col bg-[#F6F7F8] text-[#0A0A0A] font-sans selection:bg-[oklch(0.696_0.204_43.5/0.15)] selection:text-[oklch(0.696_0.204_43.5)] overflow-x-hidden">
       {/* 1. Floating Glass Capsule Navigation */}
       <Navbar />
 

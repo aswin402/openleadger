@@ -61,7 +61,7 @@ export function Tokenomics() {
         <div className="w-full h-full p-4 flex flex-col justify-between bg-[#EBECEF] rounded-2xl border border-white/60">
           <div className="flex items-center justify-between text-xs font-mono text-[#737373]">
             <span>MARKET_BUY_ENGINE</span>
-            <span className="text-[#E1443A] font-semibold">EXEC_BUY</span>
+            <span className="text-[oklch(0.696_0.204_43.5)] font-semibold">EXEC_BUY</span>
           </div>
           <div className="my-auto bg-white p-3 rounded-xl border border-gray-200/60 flex items-center justify-between">
             <div className="flex items-center gap-2">
@@ -90,20 +90,20 @@ export function Tokenomics() {
         <div className="w-full h-full p-4 flex flex-col justify-between bg-[#EBECEF] rounded-2xl border border-white/60 relative overflow-hidden">
           <div className="flex items-center justify-between text-xs font-mono text-[#737373]">
             <span>BURN_CONTRACT</span>
-            <span className="text-[#E1443A] font-semibold flex items-center gap-1">
+            <span className="text-[oklch(0.696_0.204_43.5)] font-semibold flex items-center gap-1">
               <Flame className="w-3.5 h-3.5" /> Deflationary
             </span>
           </div>
 
           {/* Floating Pill Tooltip (+429% Monthly Burn) */}
           <div className="my-auto self-center lamosa-pill-obsidian px-4 py-2 flex items-center gap-2 text-xs font-bold text-white shadow-[0_7px_16px_rgba(1,3,9,0.25)]">
-            <span className="text-[#FF4D36]">+429%</span>
+            <span className="text-[oklch(0.696_0.204_43.5)]">+429%</span>
             <span>Monthly Protocol Burn</span>
           </div>
 
           <div className="text-[11px] text-[#737373] flex justify-between font-medium">
             <span>Verified On-Chain</span>
-            <span className="text-[#E1443A] font-bold">100% Provable</span>
+            <span className="text-[oklch(0.696_0.204_43.5)] font-bold">100% Provable</span>
           </div>
         </div>
       )
@@ -111,7 +111,7 @@ export function Tokenomics() {
   ];
 
   return (
-    <section id="tokenomics" className="px-4 sm:px-6 lg:px-8 max-w-[1240px] mx-auto mb-20 sm:mb-28">
+    <section id="tokenomics" className="px-4 sm:px-6 lg:px-8 max-w-[1440px] mx-auto mb-20 sm:mb-28">
       
       {/* Header */}
       <div className="text-center max-w-3xl mx-auto mb-10 sm:mb-14">
@@ -138,7 +138,7 @@ export function Tokenomics() {
             <div
               key={st.num}
               className={`lamosa-card p-5 sm:p-7 flex flex-col justify-between min-h-[360px] sm:min-h-[400px] border border-white ${
-                st.highlight ? 'ring-1 ring-[#E1443A]/20' : ''
+                st.highlight ? 'ring-1 ring-[oklch(0.696_0.204_43.5)]/25' : ''
               }`}
             >
               {/* Top Interactive Micro-Mockup Container */}
@@ -152,7 +152,7 @@ export function Tokenomics() {
                   {st.num}
                 </span>
                 {st.highlight && (
-                  <span className="px-2.5 py-0.5 rounded-full bg-red-100 text-[#E1443A] text-[10px] font-bold">
+                  <span className="px-2.5 py-0.5 rounded-full bg-[oklch(0.696_0.204_43.5)]/10 text-[oklch(0.696_0.204_43.5)] text-[10px] font-bold">
                     Net Deflationary
                   </span>
                 )}

@@ -284,14 +284,14 @@ export function ModelCatalog() {
   };
 
   return (
-    <section id="models" className="px-4 sm:px-6 lg:px-8 max-w-[1240px] mx-auto mb-20 sm:mb-28">
+    <section id="models" className="px-4 sm:px-6 lg:px-8 max-w-[1440px] mx-auto mb-20 sm:mb-28">
       
       {/* Infinite Marquee Ticker */}
       <div className="w-full overflow-hidden mb-12 sm:mb-16 py-3 border-y border-gray-200/60 bg-white/60 backdrop-blur-sm rounded-2xl">
         <div className="animate-marquee flex items-center gap-6 sm:gap-8">
           {[...ALL_MODELS, ...ALL_MODELS].map((m, i) => (
             <div key={`${m.name}-${i}`} className="flex items-center gap-2 whitespace-nowrap text-xs font-semibold text-[#0A0A0A]">
-              <span className="w-2 h-2 rounded-full bg-[#E1443A]" />
+              <span className="w-2 h-2 rounded-full bg-[oklch(0.696_0.204_43.5)]" />
               <span className="font-['Satoshi'] font-bold">{m.name}</span>
               <span className="text-[#737373] text-[11px] font-normal font-mono">({m.provider})</span>
             </div>
@@ -345,7 +345,7 @@ export function ModelCatalog() {
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Search 27 models..."
-            className="w-full bg-white border border-gray-200 rounded-full pl-9 pr-4 py-2 text-xs text-[#0A0A0A] placeholder:text-[#A3A3A3] focus:outline-none focus:border-[#E1443A]"
+            className="w-full bg-white border border-gray-200 rounded-full pl-9 pr-4 py-2 text-xs text-[#0A0A0A] placeholder:text-[#A3A3A3] focus:outline-none focus:border-[oklch(0.696_0.204_43.5)]"
           />
         </div>
       </div>
@@ -390,7 +390,7 @@ export function ModelCatalog() {
               {/* Best For Tag Footer */}
               <div className="pt-3 border-t border-gray-100 mt-auto">
                 <span className="text-[11px] font-semibold text-[#0A0A0A]">
-                  Best for: <span className="text-[#E1443A] font-medium">{m.bestFor}</span>
+                  Best for: <span className="text-[oklch(0.696_0.204_43.5)] font-medium">{m.bestFor}</span>
                 </span>
               </div>
             </div>

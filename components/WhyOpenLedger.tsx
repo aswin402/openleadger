@@ -13,19 +13,19 @@ export function WhyOpenLedger() {
     name: 'CLAUDE OPUS 4',
     threadCount: 15,
     symbol: 'A',
-    color: 'from-[#E07A5F] to-[#C85A3D]'
+    color: 'from-[oklch(0.696_0.204_43.5)] to-[oklch(0.58_0.18_40)]'
   });
 
   return (
-    <section id="why" className="px-4 sm:px-6 lg:px-8 max-w-[1240px] mx-auto mb-20 sm:mb-28 scroll-mt-24">
+    <section id="why" className="px-4 sm:px-6 lg:px-8 max-w-[1440px] mx-auto mb-20 sm:mb-28 scroll-mt-24">
       
       {/* 1. Header Section matching Screenshot Image 0 */}
       <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 mb-10 sm:mb-14">
         <div className="max-w-2xl">
           {/* Section Kicker Badge with dot */}
           <div className="flex items-center gap-2 mb-3">
-            <span className="w-2 h-2 rounded-full bg-[#E1443A] animate-pulse" />
-            <span className="text-xs font-semibold tracking-wider text-[#E1443A] uppercase font-mono">
+            <span className="w-2 h-2 rounded-full bg-[oklch(0.696_0.204_43.5)] animate-pulse" />
+            <span className="text-xs font-semibold tracking-wider text-[oklch(0.696_0.204_43.5)] uppercase font-mono">
               WHY OPENLEDGER
             </span>
           </div>
@@ -77,7 +77,7 @@ export function WhyOpenLedger() {
             <h3 className="font-['Satoshi'] text-2xl sm:text-3xl font-bold text-[#0A0A0A] mb-1.5">
               Private & Unfiltered
             </h3>
-            <p className="text-xs sm:text-sm font-semibold text-[#D9534F] mb-3">
+            <p className="text-xs sm:text-sm font-semibold text-[oklch(0.696_0.204_43.5)] mb-3">
               Private by default. Uncensored by design.
             </p>
             <p className="text-xs sm:text-sm text-[#737373] leading-relaxed mb-6">
@@ -147,7 +147,7 @@ export function WhyOpenLedger() {
           <div className="mt-5 flex justify-end">
             <Link
               href="#faq"
-              className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#0A0A0A] hover:text-[#E1443A] transition-colors"
+              className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#0A0A0A] hover:text-[oklch(0.696_0.204_43.5)] transition-colors"
             >
               <span>HOW PRIVACY WORKS</span>
               <ArrowRight className="w-3.5 h-3.5" />
@@ -167,7 +167,7 @@ export function WhyOpenLedger() {
             <h3 className="font-['Satoshi'] text-2xl sm:text-3xl font-bold text-[#0A0A0A] mb-1.5">
               Multi-Model Access
             </h3>
-            <p className="text-xs sm:text-sm font-semibold text-[#D9534F] mb-3">
+            <p className="text-xs sm:text-sm font-semibold text-[oklch(0.696_0.204_43.5)] mb-3">
               Every frontier model, one conversation.
             </p>
             <p className="text-xs sm:text-sm text-[#737373] leading-relaxed mb-6">
@@ -193,8 +193,8 @@ export function WhyOpenLedger() {
               {/* Orbiting Satellite 1: Claude (A) - Top Left */}
               <button
                 type="button"
-                onClick={() => setActiveOrbitModel({ name: 'CLAUDE OPUS 4', threadCount: 15, symbol: 'A', color: 'from-[#E07A5F] to-[#C85A3D]' })}
-                className="absolute top-1 left-8 w-8 h-8 rounded-xl bg-gradient-to-br from-[#E07A5F] to-[#C85A3D] text-white text-xs font-bold flex items-center justify-center shadow-sm hover:scale-110 transition-transform"
+                onClick={() => setActiveOrbitModel({ name: 'CLAUDE OPUS 4', threadCount: 15, symbol: 'A', color: 'from-[oklch(0.696_0.204_43.5)] to-[oklch(0.58_0.18_40)]' })}
+                className="absolute top-1 left-8 w-8 h-8 rounded-xl bg-gradient-to-br from-[oklch(0.696_0.204_43.5)] to-[oklch(0.58_0.18_40)] text-white text-xs font-bold flex items-center justify-center shadow-sm hover:scale-110 transition-transform"
                 title="Claude Opus 4"
               >
                 A
@@ -262,7 +262,7 @@ export function WhyOpenLedger() {
           <div className="mt-5 flex justify-end">
             <Link
               href="#models"
-              className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#0A0A0A] hover:text-[#E1443A] transition-colors"
+              className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#0A0A0A] hover:text-[oklch(0.696_0.204_43.5)] transition-colors"
             >
               <span>SEE EVERY MODEL</span>
               <ArrowRight className="w-3.5 h-3.5" />
@@ -282,7 +282,7 @@ export function WhyOpenLedger() {
             <h3 className="font-['Satoshi'] text-2xl sm:text-3xl font-bold text-[#0A0A0A] mb-1.5">
               Unified Memory
             </h3>
-            <p className="text-xs sm:text-sm font-semibold text-[#D9534F] mb-3">
+            <p className="text-xs sm:text-sm font-semibold text-[oklch(0.696_0.204_43.5)] mb-3">
               One memory. Every model.
             </p>
             <p className="text-xs sm:text-sm text-[#737373] leading-relaxed mb-6">
@@ -308,7 +308,7 @@ export function WhyOpenLedger() {
                 </div>
 
                 <div className="px-3 py-1 bg-white/90 rounded-xl border border-gray-200/80 text-xs text-[#525252] flex items-center gap-1.5 shadow-xs">
-                  <FileText className="w-3 h-3 text-[#E1443A] flex-shrink-0" />
+                  <FileText className="w-3 h-3 text-[oklch(0.696_0.204_43.5)] flex-shrink-0" />
                   <span className="truncate">brand-book.pdf</span>
                 </div>
 
@@ -323,7 +323,7 @@ export function WhyOpenLedger() {
                 <div className="w-0.5 h-6 bg-purple-300 mb-2" />
 
                 <div className="flex items-center gap-2">
-                  <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-[#E07A5F] to-[#C85A3D] text-white text-xs font-bold flex items-center justify-center shadow-sm">
+                  <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-[oklch(0.696_0.204_43.5)] to-[oklch(0.58_0.18_40)] text-white text-xs font-bold flex items-center justify-center shadow-sm">
                     A
                   </div>
                   <div className="w-8 h-8 rounded-xl bg-[#10A37F] text-white text-xs font-bold flex items-center justify-center shadow-sm ring-2 ring-purple-400">
@@ -360,7 +360,7 @@ export function WhyOpenLedger() {
             <h3 className="font-['Satoshi'] text-2xl sm:text-3xl font-bold text-[#0A0A0A] mb-1.5">
               Built for Agents
             </h3>
-            <p className="text-xs sm:text-sm font-semibold text-[#D9534F] mb-3">
+            <p className="text-xs sm:text-sm font-semibold text-[oklch(0.696_0.204_43.5)] mb-3">
               One endpoint your agents can call.
             </p>
             <p className="text-xs sm:text-sm text-[#737373] leading-relaxed mb-6">
@@ -397,7 +397,7 @@ export function WhyOpenLedger() {
 
                 {/* Target 2: Sonnet 4 */}
                 <div className="flex flex-col items-center">
-                  <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-[#E07A5F] to-[#C85A3D] text-white text-xs font-bold flex items-center justify-center shadow-xs">
+                  <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-[oklch(0.696_0.204_43.5)] to-[oklch(0.58_0.18_40)] text-white text-xs font-bold flex items-center justify-center shadow-xs">
                     A
                   </div>
                   <span className="text-[10px] font-mono text-[#737373] mt-1">SONNET 4</span>
@@ -425,7 +425,7 @@ export function WhyOpenLedger() {
           <div className="mt-5 flex justify-end">
             <Link
               href="#pricing"
-              className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#0A0A0A] hover:text-[#E1443A] transition-colors"
+              className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#0A0A0A] hover:text-[oklch(0.696_0.204_43.5)] transition-colors"
             >
               <span>READ THE API</span>
               <ArrowRight className="w-3.5 h-3.5" />

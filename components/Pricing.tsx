@@ -63,7 +63,7 @@ export function Pricing() {
   ];
 
   return (
-    <section id="pricing" className="px-4 sm:px-6 lg:px-8 max-w-[1240px] mx-auto mb-20 sm:mb-28">
+    <section id="pricing" className="px-4 sm:px-6 lg:px-8 max-w-[1440px] mx-auto mb-20 sm:mb-28">
       
       {/* Header */}
       <div className="text-center max-w-3xl mx-auto mb-10 sm:mb-14">
@@ -105,7 +105,7 @@ export function Pricing() {
               key={p.id}
               className={`lamosa-card p-6 sm:p-8 flex flex-col justify-between border ${
                 p.popular
-                  ? 'border-[#E1443A]/30 shadow-[0_8px_32px_rgba(225,68,57,0.12)]'
+                  ? 'border-[oklch(0.696_0.204_43.5)]/30 shadow-[0_8px_32px_oklch(0.696_0.204_43.5/0.12)]'
                   : 'border-white'
               }`}
             >
@@ -116,7 +116,7 @@ export function Pricing() {
                     {p.name}
                   </h3>
                   {p.popular && (
-                    <span className="px-3 py-1 rounded-full bg-[#E1443A] text-white text-xs font-semibold shadow-sm">
+                    <span className="px-3 py-1 rounded-full bg-[oklch(0.696_0.204_43.5)] text-white text-xs font-semibold shadow-sm">
                       Most Popular
                     </span>
                   )}
@@ -142,7 +142,7 @@ export function Pricing() {
                 <ul className="space-y-3 mb-8">
                   {p.features.map((feat) => (
                     <li key={feat} className="flex items-start gap-2.5 text-xs sm:text-sm text-[#0A0A0A]">
-                      <Check className="w-4 h-4 text-[#E1443A] flex-shrink-0 mt-0.5" />
+                      <Check className="w-4 h-4 text-[oklch(0.696_0.204_43.5)] flex-shrink-0 mt-0.5" />
                       <span className="leading-snug">{feat}</span>
                     </li>
                   ))}

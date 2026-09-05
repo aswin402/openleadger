@@ -101,13 +101,13 @@ export function Hero() {
   };
 
   return (
-    <section className="min-h-[85vh] sm:min-h-[88vh] flex flex-col justify-between items-center px-4 sm:px-6 pt-28 sm:pt-32 md:pt-36 pb-8 text-center relative max-w-[1240px] mx-auto w-full">
+    <section className="min-h-[85vh] sm:min-h-[88vh] flex flex-col justify-between items-center px-4 sm:px-6 pt-28 sm:pt-32 md:pt-36 pb-8 text-center relative max-w-[1440px] mx-auto w-full">
       
       {/* Invisible spacing top anchor */}
       <div className="w-full h-2" />
 
       {/* Main Center Stage */}
-      <div className="w-full max-w-3xl flex flex-col items-center my-auto py-6 sm:py-10">
+      <div className="w-full max-w-4xl flex flex-col items-center my-auto py-6 sm:py-10">
         
         {/* Editorial Serif Heading */}
         <h1 className="font-serif text-5xl sm:text-6xl md:text-7xl font-normal text-[#0A0A0A] tracking-[-0.02em] mb-7 sm:mb-9 select-none">
@@ -115,7 +115,7 @@ export function Hero() {
         </h1>
 
         {/* Capsule Search / Input Bar */}
-        <div className="w-full max-w-2xl">
+        <div className="w-full max-w-3xl">
           <form
             onSubmit={handleSubmit}
             className="relative flex items-center bg-white rounded-full pl-4 sm:pl-5 pr-2 py-2 sm:py-2.5 border border-gray-200/90 shadow-[0_8px_30px_rgba(0,0,0,0.06)] hover:border-gray-300 focus-within:border-gray-400 focus-within:shadow-[0_10px_35px_rgba(0,0,0,0.08)] transition-all"
@@ -125,7 +125,7 @@ export function Hero() {
               type="button"
               onClick={handleAttachMock}
               className={`p-1.5 rounded-full transition-colors ${
-                attachedFile ? 'text-[#E1443A] bg-red-50' : 'text-[#8E8E93] hover:text-[#0A0A0A]'
+                attachedFile ? 'text-[oklch(0.696_0.204_43.5)] bg-orange-50' : 'text-[#8E8E93] hover:text-[#0A0A0A]'
               }`}
               title={attachedFile ? 'Remove attached file' : 'Attach document or image'}
               aria-label="Attach file"
@@ -161,7 +161,7 @@ export function Hero() {
           {attachedFile && (
             <div className="mt-2.5 flex items-center justify-between px-3.5 py-1.5 bg-white border border-gray-200 rounded-full text-xs text-[#0A0A0A] max-w-xs mx-auto animate-in fade-in duration-150">
               <div className="flex items-center gap-2 truncate">
-                <FileUp className="w-3.5 h-3.5 text-[#E1443A] flex-shrink-0" />
+                <FileUp className="w-3.5 h-3.5 text-[oklch(0.696_0.204_43.5)] flex-shrink-0" />
                 <span className="truncate">{attachedFile}</span>
               </div>
               <button
@@ -214,7 +214,7 @@ export function Hero() {
                 <span className="flex items-center gap-1 text-emerald-700 font-medium">
                   <CheckCircle2 className="w-3.5 h-3.5" /> Zero disk logs retained
                 </span>
-                <Link href="#models" className="text-[#E1443A] hover:underline font-medium">
+                <Link href="#models" className="text-[oklch(0.696_0.204_43.5)] hover:underline font-medium">
                   Switch model in catalog →
                 </Link>
               </div>

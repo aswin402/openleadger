@@ -146,7 +146,7 @@ export function CouncilMode() {
   const activeTopic = topics[activeTopicIndex];
 
   return (
-    <section id="council" className="px-4 sm:px-6 lg:px-8 max-w-[1240px] mx-auto mb-20 sm:mb-28">
+    <section id="council" className="px-4 sm:px-6 lg:px-8 max-w-[1440px] mx-auto mb-20 sm:mb-28">
       
       {/* Header */}
       <div className="text-center max-w-3xl mx-auto mb-10 sm:mb-14">
@@ -189,7 +189,7 @@ export function CouncilMode() {
         
         {/* User Prompt Box */}
         <div className="lamosa-card p-5 sm:p-6 mb-6 border border-white">
-          <div className="flex items-center gap-2 text-xs font-semibold text-[#E1443A] uppercase tracking-wider mb-2">
+          <div className="flex items-center gap-2 text-xs font-semibold text-[oklch(0.696_0.204_43.5)] uppercase tracking-wider mb-2">
             <Sparkles className="w-3.5 h-3.5" />
             <span>Prompt submitted to the council:</span>
           </div>

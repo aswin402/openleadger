@@ -78,14 +78,14 @@ const MODALITIES: Modality[] = [
 
 export function Capabilities() {
   return (
-    <section id="capabilities" className="px-4 sm:px-6 lg:px-8 max-w-[1240px] mx-auto mb-20 sm:mb-28 scroll-mt-24">
+    <section id="capabilities" className="px-4 sm:px-6 lg:px-8 max-w-[1440px] mx-auto mb-20 sm:mb-28 scroll-mt-24">
       
       {/* 1. Header with Top-Right Index '02 / CAPABILITIES' */}
       <div className="flex items-center justify-between border-b border-gray-200/80 pb-3 mb-8">
         {/* Section Kicker */}
         <div className="flex items-center gap-2">
-          <span className="w-2 h-2 rounded-full bg-[#E1443A] animate-pulse" />
-          <span className="text-xs font-semibold tracking-wider text-[#E1443A] uppercase font-mono">
+          <span className="w-2 h-2 rounded-full bg-[oklch(0.696_0.204_43.5)] animate-pulse" />
+          <span className="text-xs font-semibold tracking-wider text-[oklch(0.696_0.204_43.5)] uppercase font-mono">
             WHAT YOU CAN DO
           </span>
         </div>
@@ -166,7 +166,7 @@ export function Capabilities() {
       <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 mt-12 sm:mt-16 pt-4">
         <Link
           href="#models"
-          className="px-6 py-3 rounded-full bg-[#E07A5F] hover:bg-[#D46B4E] text-white text-sm font-semibold shadow-sm transition-all"
+          className="px-6 py-3 rounded-full bg-[oklch(0.696_0.204_43.5)] hover:bg-[oklch(0.65_0.20_43.5)] text-white text-sm font-semibold shadow-sm transition-all"
         >
           See what you can make
         </Link>
