@@ -117,16 +117,15 @@ export function WhyOpenLedger() {
 
             if (isActive) {
               const isFirst = idx === 0;
-              const isLast = idx === TABS.length - 1;
 
               return (
                 <div
                   key={tab.id}
                   className={`relative z-20 bg-white pt-2.5 sm:pt-3 px-1 sm:px-2 pb-2.5 sm:pb-3 mb-[-1px] flex items-center ${
                     isFirst
-                      ? 'rounded-tl-[24px] sm:rounded-tl-[32px]'
+                      ? 'rounded-tl-[24px] sm:rounded-tl-[32px] rounded-tr-[20px] sm:rounded-tr-[24px]'
                       : 'rounded-t-[20px] sm:rounded-t-[24px]'
-                  } ${isLast ? 'rounded-tr-[24px] sm:rounded-tr-[32px]' : ''}`}
+                  }`}
                 >
                   {/* Left Concave Inverted Fillet Curve (when not first tab) */}
                   {!isFirst && (
@@ -152,15 +151,13 @@ export function WhyOpenLedger() {
                     {tab.label}
                   </button>
 
-                  {/* Right Concave Inverted Fillet Curve (when not last tab) */}
-                  {!isLast && (
-                    <svg
-                      className="absolute -right-6 sm:-right-7 bottom-0 w-6 sm:w-7 h-6 sm:h-7 text-white fill-current pointer-events-none"
-                      viewBox="0 0 28 28"
-                    >
-                      <path d="M 0 0 A 28 28 0 0 0 28 28 L 0 28 Z" />
-                    </svg>
-                  )}
+                  {/* Right Concave Inverted Fillet Curve (for all tabs because shelf continues to the right) */}
+                  <svg
+                    className="absolute -right-6 sm:-right-7 bottom-0 w-6 sm:w-7 h-6 sm:h-7 text-white fill-current pointer-events-none"
+                    viewBox="0 0 28 28"
+                  >
+                    <path d="M 0 0 A 28 28 0 0 0 28 28 L 0 28 Z" />
+                  </svg>
                 </div>
               );
             }
@@ -192,8 +189,6 @@ export function WhyOpenLedger() {
           className={`relative bg-white rounded-b-[24px] sm:rounded-b-[36px] p-6 sm:p-10 md:p-12 shadow-[0_4px_20px_rgba(0,0,0,0.02)] border border-white min-h-[520px] sm:min-h-[560px] md:min-h-[580px] flex flex-col lg:flex-row items-center justify-between gap-8 lg:gap-14 transition-all duration-300 overflow-hidden ${
             activeTab === 0
               ? 'rounded-tr-[24px] sm:rounded-tr-[36px]'
-              : activeTab === TABS.length - 1
-              ? 'rounded-tl-[24px] sm:rounded-tl-[36px]'
               : 'rounded-tl-[24px] sm:rounded-tl-[36px] rounded-tr-[24px] sm:rounded-tr-[36px]'
           }`}
           role="tabpanel"
