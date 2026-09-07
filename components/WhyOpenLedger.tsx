@@ -58,7 +58,10 @@ export function WhyOpenLedger() {
   const [activeTab, setActiveTab] = useState(0);
 
   const isTransitioningRef = useRef(false);
+  const lockedRef = useRef(false);
   const activeTabRef = useRef(0);
+  const decayTimerRef = useRef<NodeJS.Timeout | null>(null);
+  const lastTriggerTimeRef = useRef(0);
 
   useEffect(() => {
     activeTabRef.current = activeTab;
@@ -75,7 +78,7 @@ export function WhyOpenLedger() {
     color: 'from-[oklch(0.696_0.204_43.5)] to-[oklch(0.58_0.18_40)]'
   });
 
-  // Calculate target scroll for a specific tab
+  // Calculate target scroll for a specific tab centered in each zone
   const getTabScrollTop = useCallback((index: number) => {
     const container = containerRef.current;
     if (!container) return 0;
@@ -87,27 +90,32 @@ export function WhyOpenLedger() {
 
     if (scrollableDistance <= 0) return containerTop - navbarOffset;
 
-    const ratio = index / (TABS.length - 1);
+    // Centered ratios for 4 zones: 0 (0.06), 1 (0.36), 2 (0.64), 3 (0.94)
+    const tabRatios = [0.06, 0.36, 0.64, 0.94];
+    const ratio = tabRatios[index] ?? (index / (TABS.length - 1));
     return containerTop - navbarOffset + ratio * scrollableDistance;
   }, []);
 
   // Jump to tab on click with smooth scroll to tab checkpoint
-  const handleTabClick = (index: number) => {
+  const handleTabClick = useCallback((index: number) => {
     setActiveTab(index);
     if (window.innerWidth < 1024) return;
 
     isTransitioningRef.current = true;
+    lockedRef.current = true;
+    lastTriggerTimeRef.current = Date.now();
     const targetScroll = getTabScrollTop(index);
     window.scrollTo({ top: targetScroll, behavior: 'smooth' });
     setTimeout(() => {
       isTransitioningRef.current = false;
-    }, 650);
-  };
+      lockedRef.current = false;
+    }, 750);
+  }, [getTabScrollTop]);
 
   // Passive scroll tracker (for scrollbar dragging or key scrolling)
   useEffect(() => {
     const handleScroll = () => {
-      if (isTransitioningRef.current) return;
+      if (isTransitioningRef.current || lockedRef.current) return;
       const container = containerRef.current;
       if (!container) return;
 
@@ -125,7 +133,18 @@ export function WhyOpenLedger() {
       const rawProgress = currentScrolled / scrollableDistance;
       const progress = Math.min(Math.max(rawProgress, 0), 1);
 
-      const tabIndex = Math.min(Math.floor(progress * TABS.length), TABS.length - 1);
+      // Stable 4-zone thresholds: [0-0.22, 0.22-0.50, 0.50-0.78, 0.78-1.0]
+      let tabIndex = 0;
+      if (progress >= 0.78) {
+        tabIndex = 3;
+      } else if (progress >= 0.50) {
+        tabIndex = 2;
+      } else if (progress >= 0.22) {
+        tabIndex = 1;
+      } else {
+        tabIndex = 0;
+      }
+
       setActiveTab(tabIndex);
     };
 
@@ -139,10 +158,8 @@ export function WhyOpenLedger() {
     };
   }, []);
 
-  // Smooth, Controlled Tab Transition Wheel Engine
+  // Smooth, Controlled Single-Step Tab Transition Wheel Engine with Momentum Lock
   useEffect(() => {
-    let timeoutId: NodeJS.Timeout | null = null;
-
     const handleWheel = (e: WheelEvent) => {
       if (window.innerWidth < 1024) return;
       const container = containerRef.current;
@@ -153,48 +170,82 @@ export function WhyOpenLedger() {
       const viewportHeight = window.innerHeight;
 
       // Only rate-limit when pinned in the sticky zone
-      const inStickyZone = rect.top <= navbarOffset + 8 && rect.bottom >= viewportHeight + 8;
+      const inStickyZone = rect.top <= navbarOffset + 12 && rect.bottom >= viewportHeight + 12;
       if (!inStickyZone) return;
 
       const current = activeTabRef.current;
       const delta = e.deltaY;
 
-      // Scrolling DOWN
-      if (delta > 20) {
+      // Always clear any existing decay timeout on new wheel event
+      if (decayTimerRef.current) {
+        clearTimeout(decayTimerRef.current);
+      }
+
+      // If already transitioning or locked by active momentum:
+      if (lockedRef.current) {
+        // Intercept ongoing momentum so it doesn't fling the page
+        if ((delta > 0 && current < TABS.length - 1) || (delta < 0 && current > 0)) {
+          e.preventDefault();
+        }
+
+        // Keep locked until user stops scrolling for at least 220ms and min cooldown elapsed
+        decayTimerRef.current = setTimeout(() => {
+          const now = Date.now();
+          if (now - lastTriggerTimeRef.current >= 750) {
+            lockedRef.current = false;
+            isTransitioningRef.current = false;
+          } else {
+            const remaining = 750 - (now - lastTriggerTimeRef.current);
+            decayTimerRef.current = setTimeout(() => {
+              lockedRef.current = false;
+              isTransitioningRef.current = false;
+            }, remaining);
+          }
+        }, 220);
+
+        return;
+      }
+
+      // Scrolling DOWN -> Advance strictly ONE tab at a time
+      if (delta > 25) {
         if (current < TABS.length - 1) {
           e.preventDefault();
 
-          if (!isTransitioningRef.current) {
-            isTransitioningRef.current = true;
-            const nextTab = current + 1;
-            setActiveTab(nextTab);
+          lockedRef.current = true;
+          isTransitioningRef.current = true;
+          lastTriggerTimeRef.current = Date.now();
 
-            const targetTop = getTabScrollTop(nextTab);
-            window.scrollTo({ top: targetTop, behavior: 'smooth' });
+          const nextTab = current + 1;
+          setActiveTab(nextTab);
 
-            timeoutId = setTimeout(() => {
-              isTransitioningRef.current = false;
-            }, 650);
-          }
+          const targetTop = getTabScrollTop(nextTab);
+          window.scrollTo({ top: targetTop, behavior: 'smooth' });
+
+          decayTimerRef.current = setTimeout(() => {
+            lockedRef.current = false;
+            isTransitioningRef.current = false;
+          }, 800);
         }
       } 
-      // Scrolling UP
-      else if (delta < -20) {
+      // Scrolling UP -> Retreat strictly ONE tab at a time
+      else if (delta < -25) {
         if (current > 0) {
           e.preventDefault();
 
-          if (!isTransitioningRef.current) {
-            isTransitioningRef.current = true;
-            const prevTab = current - 1;
-            setActiveTab(prevTab);
+          lockedRef.current = true;
+          isTransitioningRef.current = true;
+          lastTriggerTimeRef.current = Date.now();
 
-            const targetTop = getTabScrollTop(prevTab);
-            window.scrollTo({ top: targetTop, behavior: 'smooth' });
+          const prevTab = current - 1;
+          setActiveTab(prevTab);
 
-            timeoutId = setTimeout(() => {
-              isTransitioningRef.current = false;
-            }, 650);
-          }
+          const targetTop = getTabScrollTop(prevTab);
+          window.scrollTo({ top: targetTop, behavior: 'smooth' });
+
+          decayTimerRef.current = setTimeout(() => {
+            lockedRef.current = false;
+            isTransitioningRef.current = false;
+          }, 800);
         }
       }
     };
@@ -203,7 +254,7 @@ export function WhyOpenLedger() {
 
     return () => {
       window.removeEventListener('wheel', handleWheel);
-      if (timeoutId) clearTimeout(timeoutId);
+      if (decayTimerRef.current) clearTimeout(decayTimerRef.current);
     };
   }, [getTabScrollTop]);
 
@@ -236,7 +287,7 @@ export function WhyOpenLedger() {
       {/* 2. Sticky Scroll Track - ONLY THE CARD IS PINNED */}
       <div 
         ref={containerRef}
-        className="relative w-full lg:h-[360vh]"
+        className="relative w-full lg:h-[480vh]"
       >
         {/* Sticky Viewport Container - Sticks right under fixed navbar */}
         <div className="lg:sticky lg:top-20 w-full lg:h-[calc(100vh-5rem)] flex items-center justify-center px-4 sm:px-6 lg:px-8 py-6 lg:py-0">
