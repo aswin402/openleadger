@@ -32,7 +32,7 @@ uniform float u_time;
 uniform float u_bendStrength;
 varying vec2 v_texCoord;
 
-// Perlin noise function
+// Perlin noise functions
 vec2 fade(vec2 t) {
   return t * t * t * (t * (t * 6.0 - 15.0) + 10.0);
 }
@@ -46,7 +46,6 @@ float perlinNoise(vec2 p) {
   vec2 pi = floor(p);
   vec2 pf = fract(p);
 
-  // Interpolate between gradient results
   float bl = grad(pi, pf);
   float br = grad(pi + vec2(1.0, 0.0), pf - vec2(1.0, 0.0));
   float tl = grad(pi + vec2(0.0, 1.0), pf - vec2(0.0, 1.0));
@@ -57,65 +56,28 @@ float perlinNoise(vec2 p) {
   return mix(mix(bl, br, fadePos.x), mix(tl, tr, fadePos.x), fadePos.y);
 }
 
-// Radial twist/smudge function
-vec2 twistUV(vec2 uv, float strength) {
-  vec2 center = vec2(0.5, 0.5);
-  vec2 offset = uv - center;
-  float angle = length(offset) * strength;
-  float s = sin(angle);
-  float c = cos(angle);
-
-  // Apply the twist by rotating the UVs
-  mat2 rotation = mat2(c, -s, s, c);
-  return center + rotation * offset;
-}
-
 void main() {
   vec2 uv = v_texCoord;
 
-  // Oscillation for streaky flow
-  float oscX = sin(u_time * 0.9) * 0.06;
-  float oscY = cos(u_time * 1.0) * 0.06;
-  uv.x += oscX - 0.05;
-  uv.y += oscY;
+  // Gentle, organic orbital drift
+  float t = u_time * 0.35;
+  float flowX = sin(t * 0.7 + uv.y * 1.5) * 0.04;
+  float flowY = cos(t * 0.6 + uv.x * 1.5) * 0.04;
 
-  // Apply rotation for distortion effect
-  float angle = -0.5;
-  mat2 rotation = mat2(cos(angle), -sin(angle), sin(angle), cos(angle));
-  uv = rotation * (uv - 0.5) + 0.5;
+  // Multi-frequency smooth organic noise
+  float n1 = perlinNoise(uv * 2.2 + vec2(t * 0.25, -t * 0.2)) * 0.07;
+  float n2 = perlinNoise(uv * 4.5 - vec2(t * 0.15, t * 0.3)) * 0.035;
 
-  // Distortion parameters
-  float strength = 0.22;
-  float speed = u_time * 0.6;
-  float scaleX = 3.0;
-  float scaleY = 7.0;
+  vec2 distortedUV = uv + vec2(flowX + n1, flowY + n2);
 
-  // Zig-zag modulation for streaks
-  float zigZagFrequency = 6.0;
-  float zigZagAmplitude = 0.15;
-  uv.x += sin(uv.y * zigZagFrequency + u_time) * zigZagAmplitude;
-  uv.y += sin(uv.x * zigZagFrequency + u_time * 0.95) * zigZagAmplitude * 0.5;
+  // Ping-pong mirror clamp to prevent any edge seam or smear
+  vec2 wrappedUV = abs(fract(distortedUV * 0.5 + 0.5) * 2.0 - 1.0);
 
-  // Add chaotic movement with Perlin noise
-  float noiseX = perlinNoise(vec2(uv.x * scaleX, uv.y * scaleY) + vec2(speed, 5.0)) * strength;
-  float noiseY = perlinNoise(vec2(uv.x * scaleX, uv.y * scaleY) + vec2(0.0, speed)) * strength * 0.8;
+  vec4 color = texture2D(u_image, wrappedUV);
 
-  // Apply the noise to distort UVs
-  uv.x += noiseX * 2.5;
-  uv.y += noiseY;
-
-  // Overlap effect
-  float overlapStrength = 0.0;
-  float overlapRegion = sin(uv.x * 10.0 + u_time * 3.0) * overlapStrength;
-  uv.x += overlapRegion * noiseX * 1.5;
-  uv.y += overlapRegion * noiseY * 1.2;
-
-  // Apply a final smudge/twist effect
-  float twistStrength = 0.5 + sin(u_time * 0.3) * 0.4;
-  uv = twistUV(uv, twistStrength);
-
-  // Sample the texture using distorted UVs
-  vec4 color = texture2D(u_image, uv);
+  // Subtle warm luminous breath
+  float breath = sin(u_time * 0.5) * 0.012;
+  color.rgb += vec3(breath * 0.8, breath * 0.5, breath * 0.2);
 
   gl_FragColor = color;
 }
@@ -128,51 +90,41 @@ function createProceduralGradient(): HTMLCanvasElement {
   c.height = 640;
   const ctx = c.getContext('2d');
   if (ctx) {
-    // Deep black base
-    ctx.fillStyle = '#070200';
+    // Warm luminous cream/ivory base matching uploaded image (#FAF6F2)
+    ctx.fillStyle = '#FAF6F2';
     ctx.fillRect(0, 0, 1024, 640);
 
-    // Deep crimson/scarlet wash
-    const g1 = ctx.createRadialGradient(280, 300, 30, 280, 300, 480);
-    g1.addColorStop(0, '#ff4400');
-    g1.addColorStop(0.35, '#d61f00');
-    g1.addColorStop(0.7, '#6b0a00');
+    // Radiant top-right orange glow (#FF7A29 / #FFA45E)
+    const g1 = ctx.createRadialGradient(920, 80, 40, 870, 130, 620);
+    g1.addColorStop(0, '#FF7A29');
+    g1.addColorStop(0.3, '#FFA45E');
+    g1.addColorStop(0.65, '#FFD5B8');
     g1.addColorStop(1, 'transparent');
     ctx.fillStyle = g1;
     ctx.fillRect(0, 0, 1024, 640);
 
-    // Vivid brand orange #ff6600 & hot amber core
-    const g2 = ctx.createRadialGradient(650, 380, 30, 650, 380, 440);
-    g2.addColorStop(0, '#ff9900');
-    g2.addColorStop(0.28, '#ff6600');
-    g2.addColorStop(0.65, '#b32400');
+    // Soft bottom-left warm peach glow (#FFA86A / #FDCBA4)
+    const g2 = ctx.createRadialGradient(180, 520, 30, 220, 500, 520);
+    g2.addColorStop(0, '#FFA86A');
+    g2.addColorStop(0.4, '#FDCBA4');
+    g2.addColorStop(0.75, '#FAF0E6');
     g2.addColorStop(1, 'transparent');
     ctx.fillStyle = g2;
     ctx.fillRect(0, 0, 1024, 640);
 
-    // Diagonal gold/white highlight streak
-    const g3 = ctx.createLinearGradient(120, 500, 900, 120);
-    g3.addColorStop(0, 'transparent');
-    g3.addColorStop(0.35, 'rgba(255, 120, 20, 0.85)');
-    g3.addColorStop(0.52, 'rgba(255, 185, 60, 0.95)');
-    g3.addColorStop(0.7, 'rgba(210, 35, 0, 0.7)');
+    // Subtle bottom-right warm golden peach accent (#FCD8B8)
+    const g3 = ctx.createRadialGradient(920, 580, 20, 920, 580, 400);
+    g3.addColorStop(0, '#FCD8B8');
+    g3.addColorStop(0.5, '#FCE8D5');
     g3.addColorStop(1, 'transparent');
     ctx.fillStyle = g3;
-    ctx.fillRect(0, 0, 1024, 640);
-
-    // Subtle dark slate blue accent
-    const g4 = ctx.createRadialGradient(900, 120, 20, 900, 120, 360);
-    g4.addColorStop(0, '#2d4b68');
-    g4.addColorStop(0.6, '#0d1926');
-    g4.addColorStop(1, 'transparent');
-    ctx.fillStyle = g4;
     ctx.fillRect(0, 0, 1024, 640);
   }
   return c;
 }
 
 export function AuiShaderBackground({
-  imageSrc = '/images/home-gradient.jpeg',
+  imageSrc = '/images/hero-ambient-gradient.png',
   active = true,
   className = ''
 }: AuiShaderBackgroundProps) {

@@ -104,17 +104,17 @@ export function Hero() {
   return (
     <section className="relative isolate w-full min-h-screen min-h-[100dvh] flex flex-col justify-between items-center px-4 sm:px-6 lg:px-8 pt-28 sm:pt-32 md:pt-36 pb-10 sm:pb-14 text-center overflow-hidden border-b border-black/10">
       
-      {/* 1. AUI Animated WebGL Fluid Shader Background (Full-Bleed 100% Width & Height) */}
-      <div className="absolute inset-0 z-0 overflow-hidden bg-[#0A0A0A] pointer-events-none w-full h-full">
-        {/* WebGL Canvas running fluid Perlin noise shader from aui.io */}
-        <AuiShaderBackground imageSrc="/images/home-gradient.jpeg" active={true} />
+      {/* 1. Luminous Fluid Animated Gradient Background (Matching user design) */}
+      <div className="absolute inset-0 z-0 overflow-hidden bg-[#FAF6F2] pointer-events-none w-full h-full">
+        {/* WebGL Canvas running fluid Perlin noise shader */}
+        <AuiShaderBackground imageSrc="/images/hero-ambient-gradient.png" active={true} />
 
-        {/* Authentic AUI Dot Grid Overlay Texture */}
-        <div className="pointer-events-none absolute inset-0 grid-pattern opacity-35 mix-blend-overlay" />
+        {/* Ambient Glowing Depth Orbs (Top-right radiant orange, bottom-left warm peach) */}
+        <div className="absolute -top-28 -right-28 w-[550px] h-[550px] bg-gradient-to-br from-[#FF7A29]/25 via-[#FFA45E]/15 to-transparent rounded-full blur-[110px] pointer-events-none" />
+        <div className="absolute -bottom-24 -left-24 w-[500px] h-[500px] bg-gradient-to-tr from-[#FFA86A]/20 via-[#FDCBA4]/15 to-transparent rounded-full blur-[100px] pointer-events-none" />
 
-        {/* Ambient Radial & Vertical Vignettes for High Contrast Readability */}
-        <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-black/50 via-transparent to-black/70" />
-        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_35%,rgba(0,0,0,0.55)_100%)]" />
+        {/* Subtle Tech Dot Grid Overlay Texture */}
+        <div className="pointer-events-none absolute inset-0 grid-pattern-light opacity-30 mix-blend-multiply" />
       </div>
 
       {/* Invisible spacing top anchor */}
@@ -124,7 +124,7 @@ export function Hero() {
       <div className="w-full max-w-4xl flex flex-col items-center my-auto py-6 sm:py-10 relative z-10">
         
         {/* Editorial Serif Heading with high-contrast text */}
-        <h1 className="font-serif text-5xl sm:text-6xl md:text-7xl font-normal text-white tracking-[-0.02em] mb-7 sm:mb-9 select-none drop-shadow-[0_4px_24px_rgba(0,0,0,0.7)]">
+        <h1 className="font-serif text-5xl sm:text-6xl md:text-7xl font-normal text-[#0A0A0A] tracking-[-0.02em] mb-7 sm:mb-9 select-none drop-shadow-xs">
           Ask anything
         </h1>
 
@@ -132,14 +132,14 @@ export function Hero() {
         <div className="w-full max-w-3xl">
           <form
             onSubmit={handleSubmit}
-            className="relative flex items-center bg-white/95 backdrop-blur-xl rounded-full pl-4 sm:pl-5 pr-2 py-2 sm:py-2.5 border border-white/80 shadow-[0_16px_50px_rgba(0,0,0,0.4)] hover:bg-white focus-within:bg-white focus-within:ring-2 focus-within:ring-[oklch(0.696_0.204_43.5)]/50 transition-all"
+            className="relative flex items-center bg-white/90 backdrop-blur-2xl rounded-full pl-4 sm:pl-5 pr-2 py-2 sm:py-2.5 border border-black/[0.08] shadow-[0_16px_40px_rgba(0,0,0,0.06),0_2px_8px_rgba(0,0,0,0.03)] hover:bg-white focus-within:bg-white focus-within:ring-2 focus-within:ring-[#FF6600]/30 transition-all"
           >
             {/* Left Paperclip Attachment Button */}
             <button
               type="button"
               onClick={handleAttachMock}
               className={`p-1.5 rounded-full transition-colors ${
-                attachedFile ? 'text-[oklch(0.696_0.204_43.5)] bg-orange-50' : 'text-[#8E8E93] hover:text-[#0A0A0A]'
+                attachedFile ? 'text-[#FF6600] bg-orange-50' : 'text-[#8E8E93] hover:text-[#0A0A0A]'
               }`}
               title={attachedFile ? 'Remove attached file' : 'Attach document or image'}
               aria-label="Attach file"
@@ -153,14 +153,14 @@ export function Hero() {
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               placeholder="Ask anything privately..."
-              className="flex-1 bg-transparent px-3 py-2 text-sm sm:text-base text-[#0A0A0A] placeholder:text-[#737373] focus:outline-none font-normal"
+              className="flex-1 bg-transparent px-3 py-2 text-sm sm:text-base text-[#0A0A0A] placeholder:text-[#8E8E93] focus:outline-none font-normal"
             />
 
             {/* Right Up-Arrow Submit Capsule Circle */}
             <button
               type="submit"
               disabled={isSimulating || !query.trim()}
-              className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-[#010309] hover:bg-[oklch(0.696_0.204_43.5)] text-white flex items-center justify-center transition-all disabled:opacity-40 disabled:hover:bg-[#010309] flex-shrink-0 cursor-pointer shadow-md"
+              className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-[#0A0A0A] hover:bg-[#FF6600] text-white flex items-center justify-center transition-all disabled:opacity-40 disabled:hover:bg-[#0A0A0A] flex-shrink-0 cursor-pointer shadow-xs"
               aria-label="Send prompt"
             >
               {isSimulating ? (
@@ -173,9 +173,9 @@ export function Hero() {
 
           {/* Attached File Pill Preview */}
           {attachedFile && (
-            <div className="mt-2.5 flex items-center justify-between px-3.5 py-1.5 bg-white/95 backdrop-blur-md border border-white rounded-full text-xs text-[#0A0A0A] max-w-xs mx-auto animate-in fade-in duration-150 shadow-md">
+            <div className="mt-2.5 flex items-center justify-between px-3.5 py-1.5 bg-white/90 backdrop-blur-md border border-black/[0.08] rounded-full text-xs text-[#0A0A0A] max-w-xs mx-auto animate-in fade-in duration-150 shadow-xs">
               <div className="flex items-center gap-2 truncate">
-                <FileUp className="w-3.5 h-3.5 text-[oklch(0.696_0.204_43.5)] flex-shrink-0" />
+                <FileUp className="w-3.5 h-3.5 text-[#FF6600] flex-shrink-0" />
                 <span className="truncate font-medium">{attachedFile}</span>
               </div>
               <button
@@ -196,7 +196,7 @@ export function Hero() {
                 key={p.id}
                 type="button"
                 onClick={() => handleSelectPreset(p)}
-                className="px-3.5 py-1.5 sm:px-4 sm:py-2 bg-black/45 hover:bg-black/70 backdrop-blur-md rounded-full border border-white/20 hover:border-white/40 text-xs sm:text-sm font-medium text-white shadow-[0_4px_16px_rgba(0,0,0,0.25)] hover:shadow-lg transition-all flex items-center gap-1.5 cursor-pointer"
+                className="px-3.5 py-1.5 sm:px-4 sm:py-2 bg-white/85 hover:bg-white backdrop-blur-md rounded-full border border-black/[0.08] hover:border-black/[0.15] text-xs sm:text-sm font-medium text-[#1F2937] shadow-[0_2px_8px_rgba(0,0,0,0.04)] hover:shadow-md transition-all flex items-center gap-1.5 cursor-pointer"
               >
                 {p.icon}
                 <span>{p.label}</span>
@@ -206,7 +206,7 @@ export function Hero() {
 
           {/* Interactive Simulation Drawer */}
           {simulatedResponse && (
-            <div className="mt-5 p-4 sm:p-5 bg-white/95 backdrop-blur-xl rounded-2xl border border-white text-left animate-in fade-in slide-in-from-top-2 duration-200 shadow-[0_20px_50px_rgba(0,0,0,0.4)]">
+            <div className="mt-5 p-4 sm:p-5 bg-white/95 backdrop-blur-2xl rounded-2xl border border-black/[0.08] text-left animate-in fade-in slide-in-from-top-2 duration-200 shadow-[0_20px_50px_rgba(0,0,0,0.08)]">
               <div className="flex items-center justify-between mb-2">
                 <div className="flex items-center gap-2">
                   <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
@@ -228,7 +228,7 @@ export function Hero() {
                 <span className="flex items-center gap-1 text-emerald-700 font-medium">
                   <CheckCircle2 className="w-3.5 h-3.5" /> Zero disk logs retained
                 </span>
-                <Link href="#models" className="text-[oklch(0.696_0.204_43.5)] hover:underline font-medium">
+                <Link href="#models" className="text-[#FF6600] hover:underline font-medium">
                   Switch model in catalog →
                 </Link>
               </div>
@@ -243,13 +243,13 @@ export function Hero() {
         
         {/* Also On Pills */}
         <div className="flex items-center justify-center gap-2">
-          <span className="text-[11px] font-semibold text-white/70 uppercase tracking-wider font-mono">
+          <span className="text-[11px] font-semibold text-[#737373] uppercase tracking-wider font-mono">
             ALSO ON
           </span>
-          <span className="px-3 py-1 bg-white/15 hover:bg-white/25 border border-white/25 backdrop-blur-md rounded-full text-xs font-medium text-white shadow-xs cursor-pointer transition-colors">
+          <span className="px-3 py-1 bg-white/80 hover:bg-white border border-black/[0.08] backdrop-blur-md rounded-full text-xs font-medium text-[#1F2937] shadow-xs cursor-pointer transition-colors">
             iOS
           </span>
-          <span className="px-3 py-1 bg-white/15 hover:bg-white/25 border border-white/25 backdrop-blur-md rounded-full text-xs font-medium text-white shadow-xs cursor-pointer transition-colors">
+          <span className="px-3 py-1 bg-white/80 hover:bg-white border border-black/[0.08] backdrop-blur-md rounded-full text-xs font-medium text-[#1F2937] shadow-xs cursor-pointer transition-colors">
             Android
           </span>
         </div>
@@ -257,10 +257,10 @@ export function Hero() {
         {/* Smooth Scroll Anchor Link */}
         <a
           href="#why"
-          className="inline-flex flex-col items-center gap-1 text-xs sm:text-sm font-medium text-white/80 hover:text-white transition-colors group pt-1"
+          className="inline-flex flex-col items-center gap-1 text-xs sm:text-sm font-medium text-[#525252] hover:text-[#0A0A0A] transition-colors group pt-1"
         >
           <span>Learn more about OpenLedger</span>
-          <ArrowDown className="w-4 h-4 text-white/80 group-hover:translate-y-1 transition-transform" />
+          <ArrowDown className="w-4 h-4 text-[#525252] group-hover:text-[#0A0A0A] group-hover:translate-y-1 transition-transform" />
         </a>
 
       </div>
