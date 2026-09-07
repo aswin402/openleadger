@@ -71,7 +71,7 @@
     background-color: var(--bg-canvas);
     color: var(--color-text-title);
     font-family: 'Inter', sans-serif;
-    overflow-x: hidden;
+    overflow-x: clip;
     -webkit-font-smoothing: antialiased;
   }
   h1, h2, h3, h4, h5, h6 {
