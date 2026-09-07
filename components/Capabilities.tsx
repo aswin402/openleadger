@@ -74,7 +74,7 @@ export function Capabilities() {
     setTools(prev => prev.map(t => t.id === id ? { ...t, active: !t.active } : t));
   };
 
-  // Sticky Scroll & Parallax Engine for Desktop (aui.io style)
+  // Sticky Scroll & Parallax Engine for Desktop (aui.io style with smooth slow pacing)
   useEffect(() => {
     const handleScroll = () => {
       const container = containerRef.current;
@@ -97,8 +97,20 @@ export function Capabilities() {
       const progress = Math.min(Math.max(rawProgress, 0), 1);
       setScrollProgress(progress);
 
-      // Determine active step index
-      const stepIndex = Math.min(Math.floor(progress * STEPS.length), STEPS.length - 1);
+      // Generous dwell buffers at entry (0.00 to 0.06) and exit (0.94 to 1.00)
+      // to avoid jumping on initial scroll and provide slow, deliberate step pacing
+      const startBuffer = 0.06;
+      const endBuffer = 0.94;
+      
+      let stepIndex = 0;
+      if (progress <= startBuffer) {
+        stepIndex = 0;
+      } else if (progress >= endBuffer) {
+        stepIndex = STEPS.length - 1;
+      } else {
+        const normalized = (progress - startBuffer) / (endBuffer - startBuffer);
+        stepIndex = Math.min(Math.floor(normalized * STEPS.length), STEPS.length - 1);
+      }
       setActiveStep(stepIndex);
     };
 
@@ -124,8 +136,12 @@ export function Capabilities() {
     const scrollableDistance = containerHeight - viewportHeight;
     const navbarOffset = 64;
 
+    const startBuffer = 0.06;
+    const endBuffer = 0.94;
+    const stepCenter = startBuffer + (index + 0.5) * ((endBuffer - startBuffer) / STEPS.length);
+
     if (scrollableDistance > 0) {
-      const targetScroll = containerTop - navbarOffset + (index / STEPS.length + 0.02) * scrollableDistance;
+      const targetScroll = containerTop - navbarOffset + stepCenter * scrollableDistance;
       window.scrollTo({ top: targetScroll, behavior: 'smooth' });
     }
   };
@@ -134,7 +150,7 @@ export function Capabilities() {
     <section 
       id="capabilities" 
       ref={containerRef}
-      className="relative w-full lg:h-[400vh] scroll-mt-20"
+      className="relative w-full lg:h-[600vh] scroll-mt-20"
     >
       {/* Sticky Viewport Container - Sticks right under fixed navbar */}
       <div className="lg:sticky lg:top-16 w-full lg:h-[calc(100vh-4rem)] flex items-center justify-center px-4 sm:px-6 lg:px-8 py-8 lg:py-0">
@@ -179,9 +195,9 @@ export function Capabilities() {
               <div className="absolute left-0 top-2 bottom-2 w-[2px] bg-black/10 rounded-full overflow-hidden">
                 {/* Dynamic Orange Progress Bar Indicator with Glow */}
                 <div 
-                  className="w-full bg-[oklch(0.696_0.204_43.5)] rounded-full transition-all duration-150 ease-out shadow-[0_0_10px_oklch(0.696_0.204_43.5)]"
+                  className="w-full bg-[oklch(0.696_0.204_43.5)] rounded-full transition-all duration-200 ease-out shadow-[0_0_10px_oklch(0.696_0.204_43.5)]"
                   style={{
-                    height: `${Math.max(scrollProgress * 100, 15)}%`
+                    height: `${Math.max(scrollProgress * 100, 10)}%`
                   }}
                 />
               </div>
@@ -195,7 +211,7 @@ export function Capabilities() {
                       onClick={() => handleStepClick(idx)}
                       className="cursor-pointer group text-left transition-all duration-300"
                     >
-                      <h3 className={`font-['Satoshi'] text-lg sm:text-xl lg:text-2xl font-bold tracking-tight transition-colors duration-200 ${
+                      <h3 className={`font-['Satoshi'] text-lg sm:text-xl lg:text-2xl font-bold tracking-tight transition-colors duration-300 ${
                         isActive 
                           ? 'text-[#0A0A0A]' 
                           : 'text-[#8E8E93] hover:text-[#0A0A0A]'
