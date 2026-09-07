@@ -5,23 +5,39 @@ import { ArrowRight, Menu, X } from 'lucide-react';
 import Link from 'next/link';
 
 export function Navbar() {
-  const [isScrolled, setIsScrolled] = useState(false);
+  const [isPastHero, setIsPastHero] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 20);
+      const whySection = document.getElementById('why');
+      if (whySection) {
+        // When the 2nd section top reaches within 80px (navbar height) of viewport top
+        const rect = whySection.getBoundingClientRect();
+        setIsPastHero(rect.top <= 80);
+      } else {
+        // Fallback: window height minus navbar height
+        setIsPastHero(window.scrollY > (window.innerHeight - 80));
+      }
     };
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+
+    handleScroll();
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    window.addEventListener('resize', handleScroll, { passive: true });
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('resize', handleScroll);
+    };
   }, []);
 
   return (
     <header
       className={`fixed top-0 left-0 right-0 z-50 w-full transition-all duration-300 ${
-        isScrolled
+        mobileMenuOpen
+          ? 'bg-white/95 backdrop-blur-2xl border-b border-black/[0.08]'
+          : isPastHero
           ? 'bg-white/90 backdrop-blur-2xl border-b border-black/[0.08] shadow-[0_4px_24px_rgba(0,0,0,0.03)]'
-          : 'bg-[#FAF6F2]/80 backdrop-blur-xl border-b border-black/[0.06]'
+          : 'bg-transparent border-b border-transparent shadow-none'
       }`}
     >
       <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 sm:h-18 flex items-center justify-between">
