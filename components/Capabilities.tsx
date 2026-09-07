@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import Link from 'next/link';
 import { ArrowRight, RotateCw, Plus, Check } from 'lucide-react';
 
@@ -60,6 +60,13 @@ export function Capabilities() {
   const [scrollProgress, setScrollProgress] = useState(0);
   const [replayKey, setReplayKey] = useState(0);
 
+  const isTransitioningRef = useRef(false);
+  const activeStepRef = useRef(0);
+
+  useEffect(() => {
+    activeStepRef.current = activeStep;
+  }, [activeStep]);
+
   // Interactive state for Mockup 2: Tool Toggles
   const [tools, setTools] = useState([
     { id: 'reviews', name: 'Verified Reviews', active: true },
@@ -74,13 +81,42 @@ export function Capabilities() {
     setTools(prev => prev.map(t => t.id === id ? { ...t, active: !t.active } : t));
   };
 
-  // Sticky Scroll & Parallax Engine for Desktop (aui.io style with smooth slow pacing)
+  const getStepScrollTop = useCallback((index: number) => {
+    const container = containerRef.current;
+    if (!container) return 0;
+    const containerTop = container.getBoundingClientRect().top + window.scrollY;
+    const containerHeight = container.offsetHeight;
+    const viewportHeight = window.innerHeight;
+    const navbarOffset = 64;
+    const scrollableDistance = containerHeight - viewportHeight;
+
+    if (scrollableDistance <= 0) return containerTop - navbarOffset;
+
+    const stepRatio = index / (STEPS.length - 1);
+    return containerTop - navbarOffset + stepRatio * scrollableDistance;
+  }, []);
+
+  // Jump to step on click with smooth scroll to step checkpoint
+  const handleStepClick = (index: number) => {
+    setActiveStep(index);
+    setScrollProgress(index / (STEPS.length - 1));
+    if (window.innerWidth < 1024) return;
+
+    isTransitioningRef.current = true;
+    const targetScroll = getStepScrollTop(index);
+    window.scrollTo({ top: targetScroll, behavior: 'smooth' });
+    setTimeout(() => {
+      isTransitioningRef.current = false;
+    }, 700);
+  };
+
+  // Passive scroll tracker (for scrollbar dragging or key scrolling)
   useEffect(() => {
     const handleScroll = () => {
+      if (isTransitioningRef.current) return;
       const container = containerRef.current;
       if (!container) return;
 
-      // Only calculate sticky progress on desktop screens
       if (window.innerWidth < 1024) return;
 
       const rect = container.getBoundingClientRect();
@@ -91,26 +127,12 @@ export function Capabilities() {
 
       if (scrollableDistance <= 0) return;
 
-      // Distance scrolled into the container past the navbar offset
       const currentScrolled = navbarOffset - rect.top;
       const rawProgress = currentScrolled / scrollableDistance;
       const progress = Math.min(Math.max(rawProgress, 0), 1);
       setScrollProgress(progress);
 
-      // Generous dwell buffers at entry (0.00 to 0.06) and exit (0.94 to 1.00)
-      // to avoid jumping on initial scroll and provide slow, deliberate step pacing
-      const startBuffer = 0.06;
-      const endBuffer = 0.94;
-      
-      let stepIndex = 0;
-      if (progress <= startBuffer) {
-        stepIndex = 0;
-      } else if (progress >= endBuffer) {
-        stepIndex = STEPS.length - 1;
-      } else {
-        const normalized = (progress - startBuffer) / (endBuffer - startBuffer);
-        stepIndex = Math.min(Math.floor(normalized * STEPS.length), STEPS.length - 1);
-      }
+      const stepIndex = Math.min(Math.floor(progress * STEPS.length), STEPS.length - 1);
       setActiveStep(stepIndex);
     };
 
@@ -124,33 +146,81 @@ export function Capabilities() {
     };
   }, []);
 
-  // Jump to step on click with smooth scroll to step checkpoint
-  const handleStepClick = (index: number) => {
-    setActiveStep(index);
-    const container = containerRef.current;
-    if (!container || window.innerWidth < 1024) return;
+  // Smooth, Controlled Step Transition Wheel Engine
+  useEffect(() => {
+    let timeoutId: NodeJS.Timeout | null = null;
 
-    const containerTop = container.getBoundingClientRect().top + window.scrollY;
-    const containerHeight = container.offsetHeight;
-    const viewportHeight = window.innerHeight;
-    const scrollableDistance = containerHeight - viewportHeight;
-    const navbarOffset = 64;
+    const handleWheel = (e: WheelEvent) => {
+      if (window.innerWidth < 1024) return;
+      const container = containerRef.current;
+      if (!container) return;
 
-    const startBuffer = 0.06;
-    const endBuffer = 0.94;
-    const stepCenter = startBuffer + (index + 0.5) * ((endBuffer - startBuffer) / STEPS.length);
+      const rect = container.getBoundingClientRect();
+      const navbarOffset = 64;
+      const viewportHeight = window.innerHeight;
 
-    if (scrollableDistance > 0) {
-      const targetScroll = containerTop - navbarOffset + stepCenter * scrollableDistance;
-      window.scrollTo({ top: targetScroll, behavior: 'smooth' });
-    }
-  };
+      // Only rate-limit when pinned in the sticky zone
+      const inStickyZone = rect.top <= navbarOffset + 8 && rect.bottom >= viewportHeight + 8;
+      if (!inStickyZone) return;
+
+      const current = activeStepRef.current;
+      const delta = e.deltaY;
+
+      // Scrolling DOWN
+      if (delta > 20) {
+        if (current < STEPS.length - 1) {
+          e.preventDefault();
+
+          if (!isTransitioningRef.current) {
+            isTransitioningRef.current = true;
+            const nextStep = current + 1;
+            setActiveStep(nextStep);
+            setScrollProgress(nextStep / (STEPS.length - 1));
+
+            const targetTop = getStepScrollTop(nextStep);
+            window.scrollTo({ top: targetTop, behavior: 'smooth' });
+
+            timeoutId = setTimeout(() => {
+              isTransitioningRef.current = false;
+            }, 650);
+          }
+        }
+      } 
+      // Scrolling UP
+      else if (delta < -20) {
+        if (current > 0) {
+          e.preventDefault();
+
+          if (!isTransitioningRef.current) {
+            isTransitioningRef.current = true;
+            const prevStep = current - 1;
+            setActiveStep(prevStep);
+            setScrollProgress(prevStep / (STEPS.length - 1));
+
+            const targetTop = getStepScrollTop(prevStep);
+            window.scrollTo({ top: targetTop, behavior: 'smooth' });
+
+            timeoutId = setTimeout(() => {
+              isTransitioningRef.current = false;
+            }, 650);
+          }
+        }
+      }
+    };
+
+    window.addEventListener('wheel', handleWheel, { passive: false });
+
+    return () => {
+      window.removeEventListener('wheel', handleWheel);
+      if (timeoutId) clearTimeout(timeoutId);
+    };
+  }, [getStepScrollTop]);
 
   return (
     <section 
       id="capabilities" 
       ref={containerRef}
-      className="relative w-full lg:h-[600vh] scroll-mt-20"
+      className="relative w-full lg:h-[450vh] scroll-mt-20"
     >
       {/* Sticky Viewport Container - Sticks right under fixed navbar */}
       <div className="lg:sticky lg:top-16 w-full lg:h-[calc(100vh-4rem)] flex items-center justify-center px-4 sm:px-6 lg:px-8 py-8 lg:py-0">
@@ -195,7 +265,7 @@ export function Capabilities() {
               <div className="absolute left-0 top-2 bottom-2 w-[2px] bg-black/10 rounded-full overflow-hidden">
                 {/* Dynamic Orange Progress Bar Indicator with Glow */}
                 <div 
-                  className="w-full bg-[oklch(0.696_0.204_43.5)] rounded-full transition-all duration-200 ease-out shadow-[0_0_10px_oklch(0.696_0.204_43.5)]"
+                  className="w-full bg-[oklch(0.696_0.204_43.5)] rounded-full transition-all duration-300 ease-out shadow-[0_0_10px_oklch(0.696_0.204_43.5)]"
                   style={{
                     height: `${Math.max(scrollProgress * 100, 10)}%`
                   }}
