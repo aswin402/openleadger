@@ -82,7 +82,7 @@ export function WhyOpenLedger() {
     const containerTop = container.getBoundingClientRect().top + window.scrollY;
     const containerHeight = container.offsetHeight;
     const viewportHeight = window.innerHeight;
-    const navbarOffset = 64;
+    const navbarOffset = 80;
     const scrollableDistance = containerHeight - viewportHeight;
 
     if (scrollableDistance <= 0) return containerTop - navbarOffset;
@@ -116,7 +116,7 @@ export function WhyOpenLedger() {
       const rect = container.getBoundingClientRect();
       const containerHeight = container.offsetHeight;
       const viewportHeight = window.innerHeight;
-      const navbarOffset = 64;
+      const navbarOffset = 80;
       const scrollableDistance = containerHeight - viewportHeight;
 
       if (scrollableDistance <= 0) return;
@@ -149,7 +149,7 @@ export function WhyOpenLedger() {
       if (!container) return;
 
       const rect = container.getBoundingClientRect();
-      const navbarOffset = 64;
+      const navbarOffset = 80;
       const viewportHeight = window.innerHeight;
 
       // Only rate-limit when pinned in the sticky zone
@@ -210,42 +210,46 @@ export function WhyOpenLedger() {
   return (
     <section 
       id="why" 
-      ref={containerRef}
-      className="relative w-full lg:h-[380vh] scroll-mt-20"
+      className="relative w-full scroll-mt-20"
     >
-      {/* Sticky Viewport Container - Sticks right under fixed navbar */}
-      <div className="lg:sticky lg:top-16 w-full lg:h-[calc(100vh-4rem)] flex flex-col justify-center px-4 sm:px-6 lg:px-8 py-6 lg:py-0">
-        
-        <div className="max-w-[1360px] mx-auto w-full">
-          {/* 1. Header Section */}
-          <div className="text-center max-w-3xl mx-auto mb-4 sm:mb-6">
-            {/* Kicker Badge with orange square */}
-            <div className="inline-flex items-center gap-2 mb-2 px-3.5 py-1 bg-white/80 backdrop-blur-sm rounded-full border border-gray-200/70 shadow-xs">
-              <span className="w-2.5 h-2.5 rounded-xs bg-[oklch(0.696_0.204_43.5)]" />
-              <span className="text-xs font-semibold tracking-widest text-[#737373] uppercase font-mono">
-                WHY OPENLEDGER
-              </span>
-            </div>
+      {/* 1. Normal Scrolling Header Section with Generous Top Spacing */}
+      <div className="w-full pt-20 sm:pt-28 md:pt-36 pb-10 sm:pb-14 px-4 sm:px-6 lg:px-8 text-center max-w-4xl mx-auto">
+        {/* Kicker Badge with orange square */}
+        <div className="inline-flex items-center gap-2 mb-3.5 px-3.5 py-1.5 bg-white/90 backdrop-blur-sm rounded-full border border-gray-200/70 shadow-xs">
+          <span className="w-2.5 h-2.5 rounded-xs bg-[oklch(0.696_0.204_43.5)]" />
+          <span className="text-xs font-semibold tracking-widest text-[#737373] uppercase font-mono">
+            WHY OPENLEDGER
+          </span>
+        </div>
 
-            {/* Display Heading */}
-            <h2 className="font-['Satoshi'] text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight text-[#0A0A0A] leading-[1.08] mb-1.5">
-              Intelligence, on your terms.
-            </h2>
+        {/* Display Heading */}
+        <h2 className="font-['Satoshi'] text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-[#0A0A0A] leading-[1.08] mb-3 sm:mb-4">
+          Intelligence, on your terms.
+        </h2>
 
-            {/* Subheading */}
-            <p className="font-['Inter'] text-xs sm:text-sm md:text-base text-[#737373] leading-relaxed max-w-2xl mx-auto">
-              A private, uncensored layer in front of the ones you already use.
-            </p>
-          </div>
+        {/* Subheading */}
+        <p className="font-['Inter'] text-sm sm:text-base md:text-lg text-[#737373] leading-relaxed max-w-2xl mx-auto">
+          A private, uncensored layer in front of the ones you already use.
+        </p>
+      </div>
 
-          {/* 2. Folder-Tabbed Outer Enclosure Card matching Mockup Image */}
-          <div className="bg-[#E3E5EA] border border-black/5 rounded-[28px] sm:rounded-[36px] lg:rounded-[44px] p-2.5 sm:p-4 md:p-5 shadow-[0_4px_24px_rgba(0,0,0,0.03)]">
-            
-            {/* Tab Bar Row with Seamless Curved Folder Tab Architecture */}
-            <div 
-              className="flex items-end pl-0 overflow-x-auto scrollbar-none select-none relative"
-              role="tablist"
-            >
+      {/* 2. Sticky Scroll Track - ONLY THE CARD IS PINNED */}
+      <div 
+        ref={containerRef}
+        className="relative w-full lg:h-[360vh]"
+      >
+        {/* Sticky Viewport Container - Sticks right under fixed navbar */}
+        <div className="lg:sticky lg:top-20 w-full lg:h-[calc(100vh-5rem)] flex items-center justify-center px-4 sm:px-6 lg:px-8 py-6 lg:py-0">
+          
+          <div className="max-w-[1360px] mx-auto w-full">
+            {/* Folder-Tabbed Outer Enclosure Card matching Mockup Image */}
+            <div className="bg-[#E3E5EA] border border-black/5 rounded-[28px] sm:rounded-[36px] lg:rounded-[44px] p-2.5 sm:p-4 md:p-5 shadow-[0_4px_24px_rgba(0,0,0,0.03)]">
+              
+              {/* Tab Bar Row with Seamless Curved Folder Tab Architecture */}
+              <div 
+                className="flex items-end pl-0 overflow-x-auto scrollbar-none select-none relative"
+                role="tablist"
+              >
               {TABS.map((tab, idx) => {
                 const isActive = activeTab === idx;
 
@@ -644,6 +648,8 @@ export function WhyOpenLedger() {
         </div>
 
       </div>
+
+    </div>
 
     </section>
   );
